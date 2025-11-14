@@ -1412,5 +1412,13 @@
             });
         });
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script>
+  // 初始化Supabase客户端
+  const supabaseUrl = 'https://vkethnxciczquacvhisi.supabase.co';
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrZXRobnhjaWN6cXVhY3ZoaXNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxMzA3MTEsImV4cCI6MjA3ODcwNjcxMX0.n8gXVzcrypHjrBi6Q_fd99jv5YkLtF_PIKXO8elA__k';
+  const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+</script>
 </body>
 </html>
+
