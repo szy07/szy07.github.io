@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理 - 武汉科技大学</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8c1515;
+            --secondary-color: #2e5e9c;
+            --dark-color: #333333;
+            --light-color: #f8f9fa;
+            --gray-color: #5f6368;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background-color: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+            color: var(--primary-color);
+        }
+        
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* 后台管理页面样式 */
+        .admin-panel {
+            padding: 40px 0;
+            min-height: 70vh;
+        }
+        
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-table th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6d0f0f;
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(140, 21, 21, 0.1);
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .admin-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-university logo-icon"></i>
+                    <span class="logo-text">武汉科技大学 - 后台管理</span>
+                </div>
+                
+                <div class="nav-buttons">
+                    <div class="user-info" id="userInfo">
+                        <div class="user-avatar" id="userAvatar">A</div>
+                        <span id="userName">管理员</span>
+                    </div>
+                    <a href="index.html" class="btn btn-outline">返回首页</a>
+                    <a href="#" class="btn btn-primary" id="logoutBtn">退出</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 后台管理内容 -->
+    <section class="admin-panel">
+        <div class="container">
+            <div class="admin-header">
+                <h1>用户管理系统</h1>
+                <div>
+                    <button class="btn btn-primary" id="refreshBtn">刷新数据</button>
+                </div>
+            </div>
+            
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>注册时间</th>
+                        <th>管理员</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- 用户数据将通过JavaScript动态填充 -->
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取当前登录用户
+            function getCurrentUser() {
+                return JSON.parse(localStorage.getItem('currentUser') || 'null');
+            }
+            
+            // 设置当前登录用户
+            function setCurrentUser(user) {
+                if (user) {
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                } else {
+                    localStorage.removeItem('currentUser');
+                }
+            }
+            
+            // 获取所有用户
+            function getAllUsers() {
+                return JSON.parse(localStorage.getItem('users') || '[]');
+            }
+            
+            // 删除用户
+            function deleteUser(userId) {
+                const users = getAllUsers();
+                const filteredUsers = users.filter(u => u.id !== userId);
+                localStorage.setItem('users', JSON.stringify(filteredUsers));
+            }
+            
+            // 检查用户权限
+            function checkAdminAccess() {
+                const currentUser = getCurrentUser();
+                if (!currentUser || !currentUser.isAdmin) {
+                    alert('您没有访问此页面的权限！');
+                    window.location.href = 'index.html';
+                    return false;
+                }
+                return true;
+            }
+            
+            // 更新用户界面
+            function updateUI() {
+                const currentUser = getCurrentUser();
+                const userName = document.getElementById('userName');
+                const userAvatar = document.getElementById('userAvatar');
+                
+                if (currentUser) {
+                    userName.textContent = currentUser.username;
+                    userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                }
+            }
+            
+            // 加载用户数据到表格
+            function loadUserData() {
+                if (!checkAdminAccess()) return;
+                
+                const users = getAllUsers();
+                const tableBody = document.getElementById('userTableBody');
+                
+                tableBody.innerHTML = '';
+                
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    
+                    // 格式化注册日期
+                    const registerDate = new Date(user.registerDate);
+                    const formattedDate = registerDate.toLocaleDateString('zh-CN');
+                    
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${formattedDate}</td>
+                        <td>${user.isAdmin ? '是' : '否'}</td>
+                        <td>
+                            ${!user.isAdmin ? `<button class="action-btn delete-btn" data-id="${user.id}">删除</button>` : '<span style="color: var(--gray-color);">系统管理员</span>'}
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+                
+                // 添加删除按钮事件监听
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const userId = parseInt(this.getAttribute('data-id'));
+                        if (confirm('确定要删除此用户吗？此操作不可恢复。')) {
+                            deleteUser(userId);
+                            loadUserData();
+                        }
+                    });
+                });
+            }
+            
+            // 初始化
+            updateUI();
+            loadUserData();
+            
+            // 刷新按钮事件
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                loadUserData();
+            });
+            
+            // 退出登录
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                setCurrentUser(null);
+                window.location.href = 'index.html';
+            });
+        });
+    </script>
+</body>
+</html>
