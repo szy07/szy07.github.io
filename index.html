@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>武汉科技大学 - 官方网站</title>
+    <title>后台管理 - 武汉科技大学</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 基础样式 */
         :root {
-            --primary-color: #1a73e8;
-            --secondary-color: #34a853;
-            --dark-color: #202124;
+            --primary-color: #8c1515;
+            --secondary-color: #2e5e9c;
+            --dark-color: #333333;
             --light-color: #f8f9fa;
             --gray-color: #5f6368;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -36,53 +35,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
-        }
-        
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-        
-        ul {
-            list-style: none;
-        }
-        
-        img {
-            max-width: 100%;
-            height: auto;
-        }
-        
-        /* 按钮样式 */
-        .btn {
-            display: inline-block;
-            padding: 10px 24px;
-            border-radius: var(--border-radius);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background-color: #0d62d9;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(26, 115, 232, 0.3);
-        }
-        
-        .btn-outline {
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            background: transparent;
-        }
-        
-        .btn-outline:hover {
-            background-color: rgba(26, 115, 232, 0.1);
         }
         
         /* 导航栏样式 */
@@ -118,487 +70,121 @@
             color: var(--primary-color);
         }
         
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-        
-        .nav-links a {
-            font-weight: 500;
-            position: relative;
-            padding: 5px 0;
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary-color);
-            transition: var(--transition);
-        }
-        
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-        
         .nav-buttons {
             display: flex;
             gap: 15px;
+            align-items: center;
         }
         
-        /* 移动端导航 */
-        .mobile-menu-toggle {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--dark-color);
-        }
-        
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            width: 100%;
-            background-color: white;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            z-index: 99;
-            padding: 20px;
-            transform: translateY(-10px);
-            opacity: 0;
-            transition: var(--transition);
-        }
-        
-        .mobile-menu.active {
-            display: block;
-            transform: translateY(0);
-            opacity: 1;
-        }
-        
-        .mobile-nav-links {
+        .user-info {
             display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .mobile-nav-links a {
-            padding: 10px 0;
-            font-weight: 500;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .mobile-nav-buttons {
-            display: flex;
-            flex-direction: column;
+            align-items: center;
             gap: 10px;
         }
         
-        /* 英雄区域样式 */
-        .hero {
-            background: linear-gradient(135deg, #1a73e8 0%, #6c8ef5 100%);
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
             color: white;
-            padding: 100px 0;
-            text-align: center;
-        }
-        
-        .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h1 {
-            font-size: 42px;
-            margin-bottom: 20px;
-            line-height: 1.2;
-        }
-        
-        .hero p {
-            font-size: 18px;
-            margin-bottom: 30px;
-            opacity: 0.9;
-        }
-        
-        .hero-buttons {
             display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .hero .btn {
-            min-width: 150px;
-        }
-        
-        /* 特色区域样式 */
-        .features {
-            padding: 80px 0;
-            background-color: white;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        
-        .section-title h2 {
-            font-size: 36px;
-            color: var(--dark-color);
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: var(--gray-color);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-        
-        .feature-card {
-            background-color: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--shadow);
-            text-align: center;
-            transition: var(--transition);
-            border: 1px solid #f0f0f0;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-        }
-        
-        .feature-icon {
-            font-size: 48px;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-        }
-        
-        .feature-card h3 {
-            font-size: 22px;
-            margin-bottom: 15px;
-        }
-        
-        /* 登录模态框样式 */
-        .login-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+            font-weight: bold;
         }
         
-        .login-modal.active {
-            display: flex;
+        /* 后台管理页面样式 */
+        .admin-panel {
+            padding: 40px 0;
+            min-height: 70vh;
         }
         
-        .login-content {
-            background-color: white;
-            border-radius: var(--border-radius);
-            width: 100%;
-            max-width: 450px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            position: relative;
-            animation: modalFadeIn 0.3s ease;
-        }
-        
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: var(--gray-color);
-            transition: var(--transition);
-        }
-        
-        .close-modal:hover {
-            color: var(--dark-color);
-        }
-        
-        .login-content h2 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: var(--dark-color);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
-            border-radius: var(--border-radius);
-            font-size: 16px;
-            transition: var(--transition);
-        }
-        
-        .form-control:focus {
-            border-color: var(--primary-color);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
-        }
-        
-        .form-options {
+        .admin-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            gap: 10px;
+            margin-bottom: 30px;
         }
         
-        .remember-me {
-            display: flex;
-            align-items: center;
-        }
-        
-        .remember-me input {
-            margin-right: 8px;
-        }
-        
-        .forgot-password {
-            color: var(--primary-color);
-            font-size: 14px;
-        }
-        
-        .login-btn {
+        .admin-table {
             width: 100%;
-            padding: 12px;
+            border-collapse: collapse;
+            background-color: white;
+            box-shadow: var(--shadow);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .admin-table th {
             background-color: var(--primary-color);
             color: white;
+            font-weight: 600;
+        }
+        
+        .admin-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .action-btn {
+            padding: 6px 12px;
             border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+        }
+        
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .delete-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
             border-radius: var(--border-radius);
-            font-size: 16px;
             font-weight: 500;
             cursor: pointer;
             transition: var(--transition);
-        }
-        
-        .login-btn:hover {
-            background-color: #0d62d9;
-        }
-        
-        .register-link {
             text-align: center;
-            margin-top: 20px;
         }
         
-        .register-link a {
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #6d0f0f;
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--primary-color);
             color: var(--primary-color);
-            font-weight: 500;
+            background: transparent;
         }
         
-        /* 页脚样式 */
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 60px 0 20px;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-column h3 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            position: relative;
-            padding-bottom: 10px;
-        }
-        
-        .footer-column h3::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 40px;
-            height: 2px;
-            background-color: var(--primary-color);
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 10px;
-        }
-        
-        .footer-column a {
-            color: #ddd;
-            transition: var(--transition);
-        }
-        
-        .footer-column a:hover {
-            color: white;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .social-links a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-        
-        .social-links a:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-3px);
-        }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-            font-size: 14px;
-        }
-        
-        /* 登录成功提示 */
-        .login-success {
-            display: none;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 15px 25px;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            z-index: 1001;
-            animation: slideIn 0.5s ease-out;
-        }
-        
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        .btn-outline:hover {
+            background-color: rgba(140, 21, 21, 0.1);
         }
         
         /* 响应式设计 */
-        @media (max-width: 992px) {
-            .hero h1 {
-                font-size: 36px;
-            }
-            
-            .feature-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            }
-        }
-        
         @media (max-width: 768px) {
-            .nav-links, .nav-buttons {
-                display: none;
-            }
-            
-            .mobile-menu-toggle {
+            .admin-table {
                 display: block;
-            }
-            
-            .hero {
-                padding: 80px 0;
-            }
-            
-            .hero h1 {
-                font-size: 32px;
-            }
-            
-            .hero p {
-                font-size: 16px;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .section-title h2 {
-                font-size: 30px;
-            }
-            
-            .feature-card {
-                padding: 25px 20px;
-            }
-            
-            .login-content {
-                padding: 30px 25px;
-            }
-            
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 30px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .hero h1 {
-                font-size: 28px;
-            }
-            
-            .section-title h2 {
-                font-size: 26px;
-            }
-            
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .login-content {
-                padding: 25px 20px;
-            }
-            
-            .form-options {
-                flex-direction: column;
-                align-items: flex-start;
+                overflow-x: auto;
             }
         }
     </style>
@@ -609,526 +195,159 @@
         <div class="container">
             <nav class="navbar">
                 <div class="logo">
-                    <i class="fas fa-graduation-cap logo-icon"></i>
-                    <span class="logo-text">武汉科技大学</span>
+                    <i class="fas fa-university logo-icon"></i>
+                    <span class="logo-text">武汉科技大学 - 后台管理</span>
                 </div>
-                
-                <ul class="nav-links">
-                    <li><a href="www.wust.edu.cn">首页</a></li>
-                    <li><a href="#about">关于我们</a></li>
-                    <li><a href="#courses">课程设置</a></li>
-                    <li><a href="#teachers">师资力量</a></li>
-                    <li><a href="#campus">校园生活</a></li>
-                    <li><a href="#contact">联系我们</a></li>
-                </ul>
                 
                 <div class="nav-buttons">
-                    <a href="#" class="btn btn-outline" id="loginBtn">登录</a>
-                    <a href="#" class="btn btn-primary" id="registerBtn">注册</a>
-                </div>
-                
-                <div class="mobile-menu-toggle" id="mobileMenuToggle">
-                    <i class="fas fa-bars"></i>
+                    <div class="user-info" id="userInfo">
+                        <div class="user-avatar" id="userAvatar">A</div>
+                        <span id="userName">管理员</span>
+                    </div>
+                    <a href="index.html" class="btn btn-outline">返回首页</a>
+                    <a href="#" class="btn btn-primary" id="logoutBtn">退出</a>
                 </div>
             </nav>
         </div>
     </header>
 
-    <!-- 移动端菜单 -->
-    <div class="mobile-menu" id="mobileMenu">
-        <ul class="mobile-nav-links">
-            <li><a href="#home">首页</a></li>
-            <li><a href="#about">关于我们</a></li>
-            <li><a href="#courses">课程设置</a></li>
-            <li><a href="#teachers">师资力量</a></li>
-            <li><a href="#campus">校园生活</a></li>
-            <li><a href="#contact">联系我们</a></li>
-        </ul>
-        
-        <div class="mobile-nav-buttons">
-            <a href="#" class="btn btn-outline" id="mobileLoginBtn">登录</a>
-            <a href="#" class="btn btn-primary" id="mobileRegisterBtn">注册</a>
-        </div>
-    </div>
-
-    <!-- 英雄区域 -->
-    <section class="hero" id="home">
+    <!-- 后台管理内容 -->
+    <section class="admin-panel">
         <div class="container">
-            <div class="hero-content">
-                <h1>培养未来，成就梦想</h1>
-                <p>武科大致力于为学生提供优质的教育资源和全面的成长环境，帮助每一位学生发现潜能，实现自我价值。</p>
-                <div class="hero-buttons">
-                    <a href="#about" class="btn btn-primary">了解更多</a>
-                    <a href="#campus" class="btn btn-outline" style="color: white; border-color: white;">校园导览</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 关于我们区域 -->
-    <section class="features" id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>关于我们</h2>
-                <p>武科大成立于1998年，是一所集小学、初中、高中为一体的全日制学校</p>
-            </div>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-history"></i>
-                    </div>
-                    <h3>悠久历史</h3>
-                    <p>拥有25年办学历史，培养了数万名优秀毕业生</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-award"></i>
-                    </div>
-                    <h3>荣誉奖项</h3>
-                    <p>多次获得省级优秀学校、教育创新奖等荣誉</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>师生规模</h3>
-                    <p>现有教职工300余人，在校学生4000余名</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 课程设置区域 -->
-    <section class="features" id="courses" style="background-color: #f8f9fa;">
-        <div class="container">
-            <div class="section-title">
-                <h2>课程设置</h2>
-                <p>武科大以创新教育理念和先进教学设施，为学生提供全方位的学习体验</p>
-            </div>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-book-open"></i>
-                    </div>
-                    <h3>优质课程</h3>
-                    <p>涵盖科学、艺术、体育等多领域课程，满足学生全面发展的需求</p>
-                    <a href="#" class="btn btn-outline" style="margin-top: 15px;">查看详情</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-user-graduate"></i>
-                    </div>
-                    <h3>专业师资</h3>
-                    <p>经验丰富的教师团队，关注每一位学生的个性化成长</p>
-                    <a href="#teachers" class="btn btn-outline" style="margin-top: 15px;">师资介绍</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3>先进设施</h3>
-                    <p>现代化教学设备和实验室，为学生提供最佳学习环境</p>
-                    <a href="#campus" class="btn btn-outline" style="margin-top: 15px;">校园环境</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 师资力量区域 -->
-    <section class="features" id="teachers">
-        <div class="container">
-            <div class="section-title">
-                <h2>师资力量</h2>
-                <p>我们拥有一支高素质、专业化的教师团队</p>
-            </div>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <h3>优秀教师</h3>
-                    <p>80%以上教师拥有硕士及以上学历，多名教师获得国家级、省级教学奖项</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-hand-holding-heart"></i>
-                    </div>
-                    <h3>教育理念</h3>
-                    <p>以学生为中心，注重个性化发展，激发学生学习兴趣和潜能</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>持续发展</h3>
-                    <p>定期组织教师培训和国际交流，不断提升教学水平和教育理念</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 校园生活区域 -->
-    <section class="features" id="campus" style="background-color: #f8f9fa;">
-        <div class="container">
-            <div class="section-title">
-                <h2>校园生活</h2>
-                <p>丰富多彩的校园活动，促进学生全面发展</p>
-            </div>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-futbol"></i>
-                    </div>
-                    <h3>体育活动</h3>
-                    <p>定期举办运动会、各类球类比赛，增强学生体质和团队精神</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-music"></i>
-                    </div>
-                    <h3>艺术活动</h3>
-                    <p>合唱团、舞蹈队、美术社等艺术团体，培养学生审美和创造力</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-flask"></i>
-                    </div>
-                    <h3>科技活动</h3>
-                    <p>机器人社团、编程竞赛、科学实验等，激发学生科学兴趣</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 登录模态框 -->
-    <div class="login-modal" id="loginModal">
-        <div class="login-content">
-            <span class="close-modal" id="closeModal">&times;</span>
-            <h2>用户登录</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label for="username">用户名/学号</label>
-                    <input type="text" id="username" class="form-control" placeholder="请输入用户名或学号" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="password">密码</label>
-                    <input type="password" id="password" class="form-control" placeholder="请输入密码" required>
-                </div>
-                
-                <div class="form-options">
-                    <div class="remember-me">
-                        <input type="checkbox" id="remember">
-                        <label for="remember">记住我</label>
-                    </div>
-                    <a href="#" class="forgot-password">忘记密码?</a>
-                </div>
-                
-                <button type="submit" class="login-btn">登录</button>
-                
-                <div class="register-link">
-                    <p>还没有账号? <a href="#" id="toRegister">立即注册</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 注册模态框 -->
-    <div class="login-modal" id="registerModal">
-        <div class="login-content">
-            <span class="close-modal" id="closeRegisterModal">&times;</span>
-            <h2>用户注册</h2>
-            <form id="registerForm">
-                <div class="form-group">
-                    <label for="reg-username">用户名</label>
-                    <input type="text" id="reg-username" class="form-control" placeholder="请输入用户名" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="reg-email">电子邮箱</label>
-                    <input type="email" id="reg-email" class="form-control" placeholder="请输入电子邮箱" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="reg-password">密码</label>
-                    <input type="password" id="reg-password" class="form-control" placeholder="请输入密码" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="reg-confirm-password">确认密码</label>
-                    <input type="password" id="reg-confirm-password" class="form-control" placeholder="请再次输入密码" required>
-                </div>
-                
-                <button type="submit" class="login-btn">注册</button>
-                
-                <div class="register-link">
-                    <p>已有账号? <a href="#" id="toLogin">立即登录</a></p>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- 登录成功提示 -->
-    <div class="login-success" id="loginSuccess">
-        <i class="fas fa-check-circle"></i> 登录成功！
-    </div>
-
-    <!-- 页脚 -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>关于我们</h3>
-                    <ul>
-                        <li><a href="#about">学校简介</a></li>
-                        <li><a href="#about">办学理念</a></li>
-                        <li><a href="#about">校园文化</a></li>
-                        <li><a href="#about">荣誉资质</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>课程设置</h3>
-                    <ul>
-                        <li><a href="#courses">小学课程</a></li>
-                        <li><a href="#courses">初中课程</a></li>
-                        <li><a href="#courses">高中课程</a></li>
-                        <li><a href="#courses">特色课程</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>招生信息</h3>
-                    <ul>
-                        <li><a href="#admission">招生简章</a></li>
-                        <li><a href="#admission">入学流程</a></li>
-                        <li><a href="#admission">学费标准</a></li>
-                        <li><a href="#admission">奖学金</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-column">
-                    <h3>联系我们</h3>
-                    <ul>
-                        <li><i class="fas fa-map-marker-alt"></i> 北京市朝阳区教育路123号</li>
-                        <li><i class="fas fa-phone"></i> 010-12345678</li>
-                        <li><i class="fas fa-envelope"></i> info@sunshineschool.edu.cn</li>
-                    </ul>
-                    
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-weixin"></i></a>
-                        <a href="#"><i class="fab fa-weibo"></i></a>
-                        <a href="#"><i class="fab fa-qq"></i></a>
-                    </div>
+            <div class="admin-header">
+                <h1>用户管理系统</h1>
+                <div>
+                    <button class="btn btn-primary" id="refreshBtn">刷新数据</button>
                 </div>
             </div>
             
-            <div class="copyright">
-                <p>&copy; 2023 阳光学校 版权所有 | 京ICP备12345678号</p>
-            </div>
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>用户名</th>
+                        <th>邮箱</th>
+                        <th>注册时间</th>
+                        <th>管理员</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <!-- 用户数据将通过JavaScript动态填充 -->
+                </tbody>
+            </table>
         </div>
-    </footer>
+    </section>
 
     <script>
-        // 页面跳转和登录功能实现
         document.addEventListener('DOMContentLoaded', function() {
-            // 模拟用户数据库
-            const users = [
-                { username: 'admin', password: '123456', email: 'admin@sunshineschool.edu.cn' },
-                { username: 'teacher', password: 'teacher123', email: 'teacher@sunshineschool.edu.cn' },
-                { username: 'student', password: 'student123', email: 'student@sunshineschool.edu.cn' }
-            ];
-            
-            // 获取DOM元素
-            const loginBtn = document.getElementById('loginBtn');
-            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
-            const registerBtn = document.getElementById('registerBtn');
-            const mobileRegisterBtn = document.getElementById('mobileRegisterBtn');
-            const loginModal = document.getElementById('loginModal');
-            const registerModal = document.getElementById('registerModal');
-            const closeModal = document.getElementById('closeModal');
-            const closeRegisterModal = document.getElementById('closeRegisterModal');
-            const loginForm = document.getElementById('loginForm');
-            const registerForm = document.getElementById('registerForm');
-            const loginSuccess = document.getElementById('loginSuccess');
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            const mobileMenu = document.getElementById('mobileMenu');
-            const toRegister = document.getElementById('toRegister');
-            const toLogin = document.getElementById('toLogin');
-            
-            // 打开登录模态框
-            function openLoginModal() {
-                loginModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
+            // 获取当前登录用户
+            function getCurrentUser() {
+                return JSON.parse(localStorage.getItem('currentUser') || 'null');
             }
             
-            // 打开注册模态框
-            function openRegisterModal() {
-                registerModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-            
-            // 关闭登录模态框
-            function closeLoginModal() {
-                loginModal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            // 关闭注册模态框
-            function closeRegisterModalFunc() {
-                registerModal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-            
-            // 登录按钮事件
-            loginBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openLoginModal();
-            });
-            
-            mobileLoginBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openLoginModal();
-                mobileMenu.classList.remove('active');
-            });
-            
-            // 注册按钮事件
-            registerBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openRegisterModal();
-            });
-            
-            mobileRegisterBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                openRegisterModal();
-                mobileMenu.classList.remove('active');
-            });
-            
-            // 关闭模态框事件
-            closeModal.addEventListener('click', closeLoginModal);
-            closeRegisterModal.addEventListener('click', closeRegisterModalFunc);
-            
-            // 点击模态框外部关闭
-            window.addEventListener('click', function(e) {
-                if (e.target === loginModal) {
-                    closeLoginModal();
-                }
-                if (e.target === registerModal) {
-                    closeRegisterModalFunc();
-                }
-            });
-            
-            // 移动端菜单切换
-            mobileMenuToggle.addEventListener('click', function() {
-                mobileMenu.classList.toggle('active');
-            });
-            
-            // 登录和注册切换
-            toRegister.addEventListener('click', function(e) {
-                e.preventDefault();
-                closeLoginModal();
-                openRegisterModal();
-            });
-            
-            toLogin.addEventListener('click', function(e) {
-                e.preventDefault();
-                closeRegisterModalFunc();
-                openLoginModal();
-            });
-            
-            // 处理登录表单提交
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                
-                // 验证登录信息
-                const user = users.find(u => u.username === username && u.password === password);
-                
+            // 设置当前登录用户
+            function setCurrentUser(user) {
                 if (user) {
-                    // 登录成功
-                    closeLoginModal();
-                    loginSuccess.style.display = 'block';
-                    
-                    // 3秒后隐藏成功消息
-                    setTimeout(function() {
-                        loginSuccess.style.display = 'none';
-                    }, 3000);
-                    
-                    // 在实际应用中，这里应该跳转到用户主页或执行其他操作
-                    console.log('登录成功，用户:', user);
+                    localStorage.setItem('currentUser', JSON.stringify(user));
                 } else {
-                    alert('用户名或密码错误！');
+                    localStorage.removeItem('currentUser');
                 }
-            });
+            }
             
-            // 处理注册表单提交
-            registerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('reg-username').value;
-                const email = document.getElementById('reg-email').value;
-                const password = document.getElementById('reg-password').value;
-                const confirmPassword = document.getElementById('reg-confirm-password').value;
-                
-                // 验证表单
-                if (password !== confirmPassword) {
-                    alert('两次输入的密码不一致！');
-                    return;
-                }
-                
-                if (users.find(u => u.username === username)) {
-                    alert('用户名已存在！');
-                    return;
-                }
-                
-                if (users.find(u => u.email === email)) {
-                    alert('该邮箱已被注册！');
-                    return;
-                }
-                
-                // 模拟注册成功
-                users.push({ username, password, email });
-                alert('注册成功！请登录。');
-                closeRegisterModalFunc();
-                openLoginModal();
-            });
+            // 获取所有用户
+            function getAllUsers() {
+                return JSON.parse(localStorage.getItem('users') || '[]');
+            }
             
-            // 平滑滚动到锚点
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
+            // 删除用户
+            function deleteUser(userId) {
+                const users = getAllUsers();
+                const filteredUsers = users.filter(u => u.id !== userId);
+                localStorage.setItem('users', JSON.stringify(filteredUsers));
+            }
+            
+            // 检查用户权限
+            function checkAdminAccess() {
+                const currentUser = getCurrentUser();
+                if (!currentUser || !currentUser.isAdmin) {
+                    alert('您没有访问此页面的权限！');
+                    window.location.href = 'index.html';
+                    return false;
+                }
+                return true;
+            }
+            
+            // 更新用户界面
+            function updateUI() {
+                const currentUser = getCurrentUser();
+                const userName = document.getElementById('userName');
+                const userAvatar = document.getElementById('userAvatar');
+                
+                if (currentUser) {
+                    userName.textContent = currentUser.username;
+                    userAvatar.textContent = currentUser.username.charAt(0).toUpperCase();
+                }
+            }
+            
+            // 加载用户数据到表格
+            function loadUserData() {
+                if (!checkAdminAccess()) return;
+                
+                const users = getAllUsers();
+                const tableBody = document.getElementById('userTableBody');
+                
+                tableBody.innerHTML = '';
+                
+                users.forEach(user => {
+                    const row = document.createElement('tr');
                     
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
+                    // 格式化注册日期
+                    const registerDate = new Date(user.registerDate);
+                    const formattedDate = registerDate.toLocaleDateString('zh-CN');
                     
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 70,
-                            behavior: 'smooth'
-                        });
-                        
-                        // 关闭移动菜单
-                        mobileMenu.classList.remove('active');
-                    }
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${formattedDate}</td>
+                        <td>${user.isAdmin ? '是' : '否'}</td>
+                        <td>
+                            ${!user.isAdmin ? `<button class="action-btn delete-btn" data-id="${user.id}">删除</button>` : '<span style="color: var(--gray-color);">系统管理员</span>'}
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
                 });
+                
+                // 添加删除按钮事件监听
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const userId = parseInt(this.getAttribute('data-id'));
+                        if (confirm('确定要删除此用户吗？此操作不可恢复。')) {
+                            deleteUser(userId);
+                            loadUserData();
+                        }
+                    });
+                });
+            }
+            
+            // 初始化
+            updateUI();
+            loadUserData();
+            
+            // 刷新按钮事件
+            document.getElementById('refreshBtn').addEventListener('click', function() {
+                loadUserData();
+            });
+            
+            // 退出登录
+            document.getElementById('logoutBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                setCurrentUser(null);
+                window.location.href = 'index.html';
             });
         });
     </script>
 </body>
 </html>
-
