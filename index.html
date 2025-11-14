@@ -4,15 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>阳光学校 - 官方网站</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-        }
-        
+        /* 基础样式 */
         :root {
             --primary-color: #1a73e8;
             --secondary-color: #34a853;
@@ -20,6 +14,15 @@
             --light-color: #f8f9fa;
             --gray-color: #5f6368;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
         }
         
         body {
@@ -33,6 +36,53 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-block;
+            padding: 10px 24px;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0d62d9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(26, 115, 232, 0.3);
+        }
+        
+        .btn-outline {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(26, 115, 232, 0.1);
         }
         
         /* 导航栏样式 */
@@ -54,97 +104,133 @@
         .logo {
             display: flex;
             align-items: center;
+            gap: 10px;
         }
         
-        .logo img {
-            height: 50px;
-            margin-right: 10px;
+        .logo-icon {
+            font-size: 32px;
+            color: var(--primary-color);
         }
         
-        .logo h1 {
-            font-size: 24px;
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
             color: var(--primary-color);
         }
         
         .nav-links {
             display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
+            gap: 30px;
         }
         
         .nav-links a {
-            text-decoration: none;
-            color: var(--dark-color);
             font-weight: 500;
-            transition: color 0.3s;
+            position: relative;
+            padding: 5px 0;
         }
         
-        .nav-links a:hover {
-            color: var(--primary-color);
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
         }
         
         .nav-buttons {
             display: flex;
-            align-items: center;
+            gap: 15px;
         }
         
-        .btn {
-            padding: 8px 20px;
-            border-radius: 4px;
-            font-weight: 500;
+        /* 移动端导航 */
+        .mobile-menu-toggle {
+            display: none;
+            font-size: 24px;
             cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-        
-        .btn-outline {
-            border: 1px solid var(--primary-color);
-            color: var(--primary-color);
-            background: transparent;
-            margin-right: 10px;
-        }
-        
-        .btn-outline:hover {
-            background-color: rgba(26, 115, 232, 0.1);
-        }
-        
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            background-color: #0d62d9;
+            color: var(--dark-color);
         }
         
         .mobile-menu {
             display: none;
-            font-size: 24px;
-            cursor: pointer;
+            position: fixed;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            z-index: 99;
+            padding: 20px;
+            transform: translateY(-10px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        
+        .mobile-menu.active {
+            display: block;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        .mobile-nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .mobile-nav-links a {
+            padding: 10px 0;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .mobile-nav-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
         
         /* 英雄区域样式 */
         .hero {
             background: linear-gradient(135deg, #1a73e8 0%, #6c8ef5 100%);
             color: white;
-            padding: 80px 0;
+            padding: 100px 0;
             text-align: center;
         }
         
-        .hero h2 {
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
             font-size: 42px;
             margin-bottom: 20px;
+            line-height: 1.2;
         }
         
         .hero p {
             font-size: 18px;
-            max-width: 700px;
-            margin: 0 auto 30px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .hero .btn {
+            min-width: 150px;
         }
         
         /* 特色区域样式 */
@@ -172,21 +258,23 @@
         
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 30px;
         }
         
         .feature-card {
             background-color: white;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             padding: 30px;
             box-shadow: var(--shadow);
             text-align: center;
-            transition: transform 0.3s;
+            transition: var(--transition);
+            border: 1px solid #f0f0f0;
         }
         
         .feature-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         
         .feature-icon {
@@ -212,16 +300,33 @@
             z-index: 1000;
             justify-content: center;
             align-items: center;
+            padding: 20px;
+        }
+        
+        .login-modal.active {
+            display: flex;
         }
         
         .login-content {
             background-color: white;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             width: 100%;
-            max-width: 400px;
+            max-width: 450px;
             padding: 40px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             position: relative;
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .close-modal {
@@ -231,6 +336,11 @@
             font-size: 24px;
             cursor: pointer;
             color: var(--gray-color);
+            transition: var(--transition);
+        }
+        
+        .close-modal:hover {
+            color: var(--dark-color);
         }
         
         .login-content h2 {
@@ -253,14 +363,15 @@
             width: 100%;
             padding: 12px 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             font-size: 16px;
-            transition: border 0.3s;
+            transition: var(--transition);
         }
         
         .form-control:focus {
             border-color: var(--primary-color);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.2);
         }
         
         .form-options {
@@ -268,6 +379,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         
         .remember-me {
@@ -281,7 +394,7 @@
         
         .forgot-password {
             color: var(--primary-color);
-            text-decoration: none;
+            font-size: 14px;
         }
         
         .login-btn {
@@ -290,11 +403,11 @@
             background-color: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             font-size: 16px;
             font-weight: 500;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: var(--transition);
         }
         
         .login-btn:hover {
@@ -308,7 +421,7 @@
         
         .register-link a {
             color: var(--primary-color);
-            text-decoration: none;
+            font-weight: 500;
         }
         
         /* 页脚样式 */
@@ -342,18 +455,13 @@
             background-color: var(--primary-color);
         }
         
-        .footer-column ul {
-            list-style: none;
-        }
-        
         .footer-column ul li {
             margin-bottom: 10px;
         }
         
         .footer-column a {
             color: #ddd;
-            text-decoration: none;
-            transition: color 0.3s;
+            transition: var(--transition);
         }
         
         .footer-column a:hover {
@@ -374,11 +482,12 @@
             height: 36px;
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
-            transition: background-color 0.3s;
+            transition: var(--transition);
         }
         
         .social-links a:hover {
             background-color: var(--primary-color);
+            transform: translateY(-3px);
         }
         
         .copyright {
@@ -387,34 +496,6 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: #aaa;
             font-size: 14px;
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .nav-links, .nav-buttons {
-                display: none;
-            }
-            
-            .mobile-menu {
-                display: block;
-            }
-            
-            .hero h2 {
-                font-size: 32px;
-            }
-            
-            .hero p {
-                font-size: 16px;
-            }
-            
-            .feature-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .login-content {
-                margin: 20px;
-                padding: 30px 20px;
-            }
         }
         
         /* 登录成功提示 */
@@ -426,7 +507,7 @@
             background-color: var(--secondary-color);
             color: white;
             padding: 15px 25px;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             box-shadow: var(--shadow);
             z-index: 1001;
             animation: slideIn 0.5s ease-out;
@@ -442,6 +523,84 @@
                 opacity: 1;
             }
         }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links, .nav-buttons {
+                display: none;
+            }
+            
+            .mobile-menu-toggle {
+                display: block;
+            }
+            
+            .hero {
+                padding: 80px 0;
+            }
+            
+            .hero h1 {
+                font-size: 32px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title h2 {
+                font-size: 30px;
+            }
+            
+            .feature-card {
+                padding: 25px 20px;
+            }
+            
+            .login-content {
+                padding: 30px 25px;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .section-title h2 {
+                font-size: 26px;
+            }
+            
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .login-content {
+                padding: 25px 20px;
+            }
+            
+            .form-options {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 <body>
@@ -450,12 +609,12 @@
         <div class="container">
             <nav class="navbar">
                 <div class="logo">
-                    <i class="fas fa-graduation-cap" style="font-size: 36px; color: #1a73e8;"></i>
-                    <h1>阳光学校</h1>
+                    <i class="fas fa-graduation-cap logo-icon"></i>
+                    <span class="logo-text">阳光学校</span>
                 </div>
                 
                 <ul class="nav-links">
-                    <li><a href="www.wust.edu.cn">首页</a></li>
+                    <li><a href="#">首页</a></li>
                     <li><a href="#">关于我们</a></li>
                     <li><a href="#">课程设置</a></li>
                     <li><a href="#">师资力量</a></li>
@@ -468,19 +627,41 @@
                     <a href="#" class="btn btn-primary">注册</a>
                 </div>
                 
-                <div class="mobile-menu">
+                <div class="mobile-menu-toggle" id="mobileMenuToggle">
                     <i class="fas fa-bars"></i>
                 </div>
             </nav>
         </div>
     </header>
 
+    <!-- 移动端菜单 -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul class="mobile-nav-links">
+            <li><a href="#">首页</a></li>
+            <li><a href="#">关于我们</a></li>
+            <li><a href="#">课程设置</a></li>
+            <li><a href="#">师资力量</a></li>
+            <li><a href="#">校园生活</a></li>
+            <li><a href="#">联系我们</a></li>
+        </ul>
+        
+        <div class="mobile-nav-buttons">
+            <a href="#" class="btn btn-outline" id="mobileLoginBtn">登录</a>
+            <a href="#" class="btn btn-primary">注册</a>
+        </div>
+    </div>
+
     <!-- 英雄区域 -->
     <section class="hero">
         <div class="container">
-            <h2>培养未来，成就梦想</h2>
-            <p>阳光学校致力于为学生提供优质的教育资源和全面的成长环境，帮助每一位学生发现潜能，实现自我价值。</p>
-            <a href="#" class="btn btn-primary">了解更多</a>
+            <div class="hero-content">
+                <h1>培养未来，成就梦想</h1>
+                <p>阳光学校致力于为学生提供优质的教育资源和全面的成长环境，帮助每一位学生发现潜能，实现自我价值。</p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn btn-primary">了解更多</a>
+                    <a href="#" class="btn btn-outline" style="color: white; border-color: white;">校园导览</a>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -618,27 +799,49 @@
         // 登录功能实现
         document.addEventListener('DOMContentLoaded', function() {
             const loginBtn = document.getElementById('loginBtn');
+            const mobileLoginBtn = document.getElementById('mobileLoginBtn');
             const loginModal = document.getElementById('loginModal');
             const closeModal = document.getElementById('closeModal');
             const loginForm = document.getElementById('loginForm');
             const loginSuccess = document.getElementById('loginSuccess');
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            const mobileMenu = document.getElementById('mobileMenu');
             
             // 打开登录模态框
+            function openLoginModal() {
+                loginModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
+            }
+            
             loginBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                loginModal.style.display = 'flex';
+                openLoginModal();
+            });
+            
+            mobileLoginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openLoginModal();
+                mobileMenu.classList.remove('active'); // 关闭移动菜单
             });
             
             // 关闭登录模态框
-            closeModal.addEventListener('click', function() {
-                loginModal.style.display = 'none';
-            });
+            function closeLoginModal() {
+                loginModal.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }
+            
+            closeModal.addEventListener('click', closeLoginModal);
             
             // 点击模态框外部关闭
             window.addEventListener('click', function(e) {
                 if (e.target === loginModal) {
-                    loginModal.style.display = 'none';
+                    closeLoginModal();
                 }
+            });
+            
+            // 移动端菜单切换
+            mobileMenuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
             });
             
             // 处理登录表单提交
@@ -652,7 +855,7 @@
                 if (username && password) {
                     // 在实际应用中，这里应该发送请求到服务器验证
                     // 这里仅模拟登录成功
-                    loginModal.style.display = 'none';
+                    closeLoginModal();
                     
                     // 显示成功消息
                     loginSuccess.style.display = 'block';
@@ -670,5 +873,4 @@
         });
     </script>
 </body>
-
 </html>
