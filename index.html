@@ -228,6 +228,15 @@
             margin-bottom: 15px;
         }
         
+        /* 页面内容区域 */
+        .page-content {
+            display: none;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
         /* 英雄区域样式 */
         .hero {
             background: linear-gradient(135deg, var(--primary-color) 0%, #b53d3d 100%);
@@ -706,19 +715,19 @@
                 </div>
                 
                 <ul class="nav-links">
-                    <li><a href="https://www.wust.edu.cn" target="_blank">首页</a></li>
-                    <li><a href="https://www.wust.edu.cn/xxgk/xxjj.htm" target="_blank">学校概况</a></li>
-                    <li><a href="https://www.wust.edu.cn/jxky.htm" target="_blank">教学科研</a></li>
-                    <li><a href="https://www.wust.edu.cn/szdw.htm" target="_blank">师资队伍</a></li>
-                    <li><a href="https://www.wust.edu.cn/zsjy.htm" target="_blank">招生就业</a></li>
-                    <li><a href="https://www.wust.edu.cn/xywh.htm" target="_blank">校园文化</a></li>
+                    <li><a href="#" data-page="home">首页</a></li>
+                    <li><a href="#" data-page="about">学校概况</a></li>
+                    <li><a href="#" data-page="courses">教学科研</a></li>
+                    <li><a href="#" data-page="teachers">师资队伍</a></li>
+                    <li><a href="#" data-page="campus">校园文化</a></li>
+                    <li><a href="#" data-page="admin" id="adminNavLink" style="display: none;">后台管理</a></li>
                 </ul>
                 
                 <div class="nav-buttons">
                     <div class="user-info" id="userInfo">
                         <div class="user-avatar" id="userAvatar">U</div>
                         <span id="userName">用户</span>
-                        <a href="admin.html" class="admin-link">后台管理</a>
+                        <a href="#" class="admin-link" data-page="admin" id="adminLink">后台管理</a>
                         <a href="#" class="btn btn-outline" id="logoutBtn">退出</a>
                     </div>
                     <a href="#" class="btn btn-outline" id="loginBtn">登录</a>
@@ -737,15 +746,15 @@
         <div class="mobile-user-info" id="mobileUserInfo">
             <div class="user-avatar" id="mobileUserAvatar">U</div>
             <span id="mobileUserName">用户</span>
-            <a href="admin.html" class="admin-link">后台管理</a>
+            <a href="#" class="admin-link" data-page="admin" id="mobileAdminLink">后台管理</a>
         </div>
         <ul class="mobile-nav-links">
-            <li><a href="https://www.wust.edu.cn" target="_blank">首页</a></li>
-            <li><a href="https://www.wust.edu.cn/xxgk/xxjj.htm" target="_blank">学校概况</a></li>
-            <li><a href="https://www.wust.edu.cn/jxky.htm" target="_blank">教学科研</a></li>
-            <li><a href="https://www.wust.edu.cn/szdw.htm" target="_blank">师资队伍</a></li>
-            <li><a href="https://www.wust.edu.cn/zsjy.htm" target="_blank">招生就业</a></li>
-            <li><a href="https://www.wust.edu.cn/xywh.htm" target="_blank">校园文化</a></li>
+            <li><a href="#" data-page="home">首页</a></li>
+            <li><a href="#" data-page="about">学校概况</a></li>
+            <li><a href="#" data-page="courses">教学科研</a></li>
+            <li><a href="#" data-page="teachers">师资队伍</a></li>
+            <li><a href="#" data-page="campus">校园文化</a></li>
+            <li><a href="#" data-page="admin" id="mobileAdminNavLink" style="display: none;">后台管理</a></li>
         </ul>
         
         <div class="mobile-nav-buttons" id="mobileNavButtons">
@@ -755,58 +764,92 @@
         </div>
     </div>
 
-    <!-- 英雄区域 -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>厚德博学，崇实去浮</h1>
-                <p>武汉科技大学是湖北省人民政府和教育部共建的地方高水平大学，是国家"中西部高校基础能力建设工程"入选高校和湖北省"双一流"建设高校。</p>
-                <div class="hero-buttons">
-                    <a href="https://www.wust.edu.cn" class="btn btn-primary" target="_blank">访问官网</a>
-                    <a href="https://www.wust.edu.cn/zsjy.htm" class="btn btn-outline" style="color: white; border-color: white;" target="_blank">招生信息</a>
+    <!-- 首页内容 -->
+    <div id="home" class="page-content active">
+        <!-- 英雄区域 -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>厚德博学，崇实去浮</h1>
+                    <p>武汉科技大学是湖北省人民政府和教育部共建的地方高水平大学，是国家"中西部高校基础能力建设工程"入选高校和湖北省"双一流"建设高校。</p>
+                    <div class="hero-buttons">
+                        <a href="https://www.wust.edu.cn" class="btn btn-primary" target="_blank">访问官网</a>
+                        <a href="https://www.wust.edu.cn/zsjy.htm" class="btn btn-outline" style="color: white; border-color: white;" target="_blank">招生信息</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- 特色区域 -->
-    <section class="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>学校特色</h2>
-                <p>武汉科技大学以工为主，理工结合，工、理、管、医、文、经、法、哲、艺等多学科协调发展</p>
-            </div>
-            
-            <div class="feature-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h3>学科建设</h3>
-                    <p>学校拥有8个博士后科研流动站，8个一级学科博士学位授权点，33个一级学科硕士学位授权点</p>
-                    <a href="https://www.wust.edu.cn/xkjs.htm" class="btn btn-outline" style="margin-top: 15px;" target="_blank">了解更多</a>
+        <!-- 特色区域 -->
+        <section class="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>学校特色</h2>
+                    <p>武汉科技大学以工为主，理工结合，工、理、管、医、文、经、法、哲、艺等多学科协调发展</p>
                 </div>
                 
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-flask"></i>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>学科建设</h3>
+                        <p>学校拥有8个博士后科研流动站，8个一级学科博士学位授权点，33个一级学科硕士学位授权点</p>
+                        <a href="https://www.wust.edu.cn/xkjs.htm" class="btn btn-outline" style="margin-top: 15px;" target="_blank">了解更多</a>
                     </div>
-                    <h3>科学研究</h3>
-                    <p>学校建有湖北省属高校第一个国家重点实验室，承担了一批国家自然科学基金重点项目等科研项目</p>
-                    <a href="https://www.wust.edu.cn/kyjg.htm" class="btn btn-outline" style="margin-top: 15px;" target="_blank">了解更多</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-flask"></i>
+                        </div>
+                        <h3>科学研究</h3>
+                        <p>学校建有湖北省属高校第一个国家重点实验室，承担了一批国家自然科学基金重点项目等科研项目</p>
+                        <a href="https://www.wust.edu.cn/kyjg.htm" class="btn btn-outline" style="margin-top: 15px;" target="_blank">了解更多</a>
                     </div>
-                    <h3>师资力量</h3>
-                    <p>学校现有教职工2600余人，其中专任教师1800余人，拥有全职及双聘院士5人</p>
-                    <a href="https://www.wust.edu.cn/szdw.htm" class="btn btn-outline" style="margin-top: 15px;" target="_blank">了解更多</a>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>师资力量</h3>
+                        <p>学校现有教职工2600余人，其中专任教师1800余人，拥有全职及双聘院士5人</p>
+                        <a href="https://www.wust.edu.cn/szdw.htm" class="btn btn-outline" style="margin-top: 15px;" target="_blank">了解更多</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
+
+    <!-- 后台管理页面 -->
+    <div id="admin" class="page-content">
+        <section class="admin-panel">
+            <div class="container">
+                <div class="admin-header">
+                    <h1>用户管理系统</h1>
+                    <div>
+                        <button class="btn btn-primary" id="refreshBtn">刷新数据</button>
+                        <button class="btn btn-outline" data-page="home">返回首页</button>
+                    </div>
+                </div>
+                
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>用户名</th>
+                            <th>邮箱</th>
+                            <th>注册时间</th>
+                            <th>管理员</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody">
+                        <!-- 用户数据将通过JavaScript动态填充 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 
     <!-- 登录模态框 -->
     <div class="login-modal" id="loginModal">
@@ -1010,6 +1053,42 @@
                 }
             }
             
+            // 删除用户
+            function deleteUser(userId) {
+                const users = getAllUsers();
+                const filteredUsers = users.filter(u => u.id !== userId);
+                localStorage.setItem('users', JSON.stringify(filteredUsers));
+            }
+            
+            // 检查用户权限
+            function checkAdminAccess() {
+                const currentUser = getCurrentUser();
+                if (!currentUser || !currentUser.isAdmin) {
+                    alert('您没有访问此页面的权限！');
+                    showPage('home');
+                    return false;
+                }
+                return true;
+            }
+            
+            // 页面切换功能
+            function showPage(pageId) {
+                // 隐藏所有页面
+                document.querySelectorAll('.page-content').forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // 显示目标页面
+                document.getElementById(pageId).classList.add('active');
+                
+                // 如果是后台管理页面，检查权限并加载数据
+                if (pageId === 'admin') {
+                    if (checkAdminAccess()) {
+                        loadUserData();
+                    }
+                }
+            }
+            
             // 更新用户界面
             function updateUI() {
                 const currentUser = getCurrentUser();
@@ -1025,6 +1104,8 @@
                 const mobileLoginBtn = document.getElementById('mobileLoginBtn');
                 const mobileRegisterBtn = document.getElementById('mobileRegisterBtn');
                 const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+                const adminNavLink = document.getElementById('adminNavLink');
+                const mobileAdminNavLink = document.getElementById('mobileAdminNavLink');
                 
                 if (currentUser) {
                     // 用户已登录
@@ -1041,6 +1122,15 @@
                     mobileLoginBtn.style.display = 'none';
                     mobileRegisterBtn.style.display = 'none';
                     mobileLogoutBtn.style.display = 'block';
+                    
+                    // 如果是管理员，显示后台管理链接
+                    if (currentUser.isAdmin) {
+                        adminNavLink.style.display = 'block';
+                        mobileAdminNavLink.style.display = 'block';
+                    } else {
+                        adminNavLink.style.display = 'none';
+                        mobileAdminNavLink.style.display = 'none';
+                    }
                 } else {
                     // 用户未登录
                     userInfo.style.display = 'none';
@@ -1051,7 +1141,50 @@
                     mobileLoginBtn.style.display = 'block';
                     mobileRegisterBtn.style.display = 'block';
                     mobileLogoutBtn.style.display = 'none';
+                    
+                    adminNavLink.style.display = 'none';
+                    mobileAdminNavLink.style.display = 'none';
                 }
+            }
+            
+            // 加载用户数据到表格
+            function loadUserData() {
+                const users = getAllUsers();
+                const tableBody = document.getElementById('userTableBody');
+                
+                tableBody.innerHTML = '';
+                
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    
+                    // 格式化注册日期
+                    const registerDate = new Date(user.registerDate);
+                    const formattedDate = registerDate.toLocaleDateString('zh-CN');
+                    
+                    row.innerHTML = `
+                        <td>${user.id}</td>
+                        <td>${user.username}</td>
+                        <td>${user.email}</td>
+                        <td>${formattedDate}</td>
+                        <td>${user.isAdmin ? '是' : '否'}</td>
+                        <td>
+                            ${!user.isAdmin ? `<button class="action-btn delete-btn" data-id="${user.id}">删除</button>` : '<span style="color: var(--gray-color);">系统管理员</span>'}
+                        </td>
+                    `;
+                    
+                    tableBody.appendChild(row);
+                });
+                
+                // 添加删除按钮事件监听
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const userId = parseInt(this.getAttribute('data-id'));
+                        if (confirm('确定要删除此用户吗？此操作不可恢复。')) {
+                            deleteUser(userId);
+                            loadUserData();
+                        }
+                    });
+                });
             }
             
             // 初始化
@@ -1076,6 +1209,9 @@
             const toLogin = document.getElementById('toLogin');
             const logoutBtn = document.getElementById('logoutBtn');
             const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+            const refreshBtn = document.getElementById('refreshBtn');
+            const adminLink = document.getElementById('adminLink');
+            const mobileAdminLink = document.getElementById('mobileAdminLink');
             
             // 打开登录模态框
             function openLoginModal() {
@@ -1231,6 +1367,7 @@
             function logout() {
                 setCurrentUser(null);
                 updateUI();
+                showPage('home');
                 alert('已成功退出登录');
             }
             
@@ -1244,8 +1381,36 @@
                 logout();
                 mobileMenu.classList.remove('active');
             });
+            
+            // 页面导航
+            document.querySelectorAll('a[data-page]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageId = this.getAttribute('data-page');
+                    showPage(pageId);
+                    
+                    // 关闭移动菜单
+                    mobileMenu.classList.remove('active');
+                });
+            });
+            
+            // 后台管理链接
+            adminLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('admin');
+            });
+            
+            mobileAdminLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showPage('admin');
+                mobileMenu.classList.remove('active');
+            });
+            
+            // 刷新用户数据
+            refreshBtn.addEventListener('click', function() {
+                loadUserData();
+            });
         });
     </script>
 </body>
 </html>
-
