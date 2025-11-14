@@ -614,17 +614,17 @@
                 </div>
                 
                 <ul class="nav-links">
-                    <li><a href="#">首页</a></li>
-                    <li><a href="#">关于我们</a></li>
-                    <li><a href="#">课程设置</a></li>
-                    <li><a href="#">师资力量</a></li>
-                    <li><a href="#">校园生活</a></li>
-                    <li><a href="#">联系我们</a></li>
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                    <li><a href="#courses">课程设置</a></li>
+                    <li><a href="#teachers">师资力量</a></li>
+                    <li><a href="#campus">校园生活</a></li>
+                    <li><a href="#contact">联系我们</a></li>
                 </ul>
                 
                 <div class="nav-buttons">
                     <a href="#" class="btn btn-outline" id="loginBtn">登录</a>
-                    <a href="#" class="btn btn-primary">注册</a>
+                    <a href="#" class="btn btn-primary" id="registerBtn">注册</a>
                 </div>
                 
                 <div class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -637,39 +637,75 @@
     <!-- 移动端菜单 -->
     <div class="mobile-menu" id="mobileMenu">
         <ul class="mobile-nav-links">
-            <li><a href="#">首页</a></li>
-            <li><a href="#">关于我们</a></li>
-            <li><a href="#">课程设置</a></li>
-            <li><a href="#">师资力量</a></li>
-            <li><a href="#">校园生活</a></li>
-            <li><a href="#">联系我们</a></li>
+            <li><a href="#home">首页</a></li>
+            <li><a href="#about">关于我们</a></li>
+            <li><a href="#courses">课程设置</a></li>
+            <li><a href="#teachers">师资力量</a></li>
+            <li><a href="#campus">校园生活</a></li>
+            <li><a href="#contact">联系我们</a></li>
         </ul>
         
         <div class="mobile-nav-buttons">
             <a href="#" class="btn btn-outline" id="mobileLoginBtn">登录</a>
-            <a href="#" class="btn btn-primary">注册</a>
+            <a href="#" class="btn btn-primary" id="mobileRegisterBtn">注册</a>
         </div>
     </div>
 
     <!-- 英雄区域 -->
-    <section class="hero">
+    <section class="hero" id="home">
         <div class="container">
             <div class="hero-content">
                 <h1>培养未来，成就梦想</h1>
                 <p>阳光学校致力于为学生提供优质的教育资源和全面的成长环境，帮助每一位学生发现潜能，实现自我价值。</p>
                 <div class="hero-buttons">
-                    <a href="#" class="btn btn-primary">了解更多</a>
-                    <a href="#" class="btn btn-outline" style="color: white; border-color: white;">校园导览</a>
+                    <a href="#about" class="btn btn-primary">了解更多</a>
+                    <a href="#campus" class="btn btn-outline" style="color: white; border-color: white;">校园导览</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 特色区域 -->
-    <section class="features">
+    <!-- 关于我们区域 -->
+    <section class="features" id="about">
         <div class="container">
             <div class="section-title">
-                <h2>我们的特色</h2>
+                <h2>关于我们</h2>
+                <p>阳光学校成立于1998年，是一所集小学、初中、高中为一体的全日制学校</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3>悠久历史</h3>
+                    <p>拥有25年办学历史，培养了数万名优秀毕业生</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>荣誉奖项</h3>
+                    <p>多次获得省级优秀学校、教育创新奖等荣誉</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>师生规模</h3>
+                    <p>现有教职工300余人，在校学生4000余名</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 课程设置区域 -->
+    <section class="features" id="courses" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2>课程设置</h2>
                 <p>阳光学校以创新教育理念和先进教学设施，为学生提供全方位的学习体验</p>
             </div>
             
@@ -680,6 +716,7 @@
                     </div>
                     <h3>优质课程</h3>
                     <p>涵盖科学、艺术、体育等多领域课程，满足学生全面发展的需求</p>
+                    <a href="#" class="btn btn-outline" style="margin-top: 15px;">查看详情</a>
                 </div>
                 
                 <div class="feature-card">
@@ -688,6 +725,7 @@
                     </div>
                     <h3>专业师资</h3>
                     <p>经验丰富的教师团队，关注每一位学生的个性化成长</p>
+                    <a href="#teachers" class="btn btn-outline" style="margin-top: 15px;">师资介绍</a>
                 </div>
                 
                 <div class="feature-card">
@@ -696,6 +734,79 @@
                     </div>
                     <h3>先进设施</h3>
                     <p>现代化教学设备和实验室，为学生提供最佳学习环境</p>
+                    <a href="#campus" class="btn btn-outline" style="margin-top: 15px;">校园环境</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 师资力量区域 -->
+    <section class="features" id="teachers">
+        <div class="container">
+            <div class="section-title">
+                <h2>师资力量</h2>
+                <p>我们拥有一支高素质、专业化的教师团队</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>优秀教师</h3>
+                    <p>80%以上教师拥有硕士及以上学历，多名教师获得国家级、省级教学奖项</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-holding-heart"></i>
+                    </div>
+                    <h3>教育理念</h3>
+                    <p>以学生为中心，注重个性化发展，激发学生学习兴趣和潜能</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>持续发展</h3>
+                    <p>定期组织教师培训和国际交流，不断提升教学水平和教育理念</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 校园生活区域 -->
+    <section class="features" id="campus" style="background-color: #f8f9fa;">
+        <div class="container">
+            <div class="section-title">
+                <h2>校园生活</h2>
+                <p>丰富多彩的校园活动，促进学生全面发展</p>
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-futbol"></i>
+                    </div>
+                    <h3>体育活动</h3>
+                    <p>定期举办运动会、各类球类比赛，增强学生体质和团队精神</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h3>艺术活动</h3>
+                    <p>合唱团、舞蹈队、美术社等艺术团体，培养学生审美和创造力</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <h3>科技活动</h3>
+                    <p>机器人社团、编程竞赛、科学实验等，激发学生科学兴趣</p>
                 </div>
             </div>
         </div>
@@ -728,7 +839,42 @@
                 <button type="submit" class="login-btn">登录</button>
                 
                 <div class="register-link">
-                    <p>还没有账号? <a href="#">立即注册</a></p>
+                    <p>还没有账号? <a href="#" id="toRegister">立即注册</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div class="login-modal" id="registerModal">
+        <div class="login-content">
+            <span class="close-modal" id="closeRegisterModal">&times;</span>
+            <h2>用户注册</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="reg-username">用户名</label>
+                    <input type="text" id="reg-username" class="form-control" placeholder="请输入用户名" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-email">电子邮箱</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="请输入电子邮箱" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-password">密码</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="请输入密码" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-confirm-password">确认密码</label>
+                    <input type="password" id="reg-confirm-password" class="form-control" placeholder="请再次输入密码" required>
+                </div>
+                
+                <button type="submit" class="login-btn">注册</button>
+                
+                <div class="register-link">
+                    <p>已有账号? <a href="#" id="toLogin">立即登录</a></p>
                 </div>
             </form>
         </div>
@@ -740,36 +886,36 @@
     </div>
 
     <!-- 页脚 -->
-    <footer>
+    <footer id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
                     <h3>关于我们</h3>
                     <ul>
-                        <li><a href="#">学校简介</a></li>
-                        <li><a href="#">办学理念</a></li>
-                        <li><a href="#">校园文化</a></li>
-                        <li><a href="#">荣誉资质</a></li>
+                        <li><a href="#about">学校简介</a></li>
+                        <li><a href="#about">办学理念</a></li>
+                        <li><a href="#about">校园文化</a></li>
+                        <li><a href="#about">荣誉资质</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
                     <h3>课程设置</h3>
                     <ul>
-                        <li><a href="#">小学课程</a></li>
-                        <li><a href="#">初中课程</a></li>
-                        <li><a href="#">高中课程</a></li>
-                        <li><a href="#">特色课程</a></li>
+                        <li><a href="#courses">小学课程</a></li>
+                        <li><a href="#courses">初中课程</a></li>
+                        <li><a href="#courses">高中课程</a></li>
+                        <li><a href="#courses">特色课程</a></li>
                     </ul>
                 </div>
                 
                 <div class="footer-column">
                     <h3>招生信息</h3>
                     <ul>
-                        <li><a href="#">招生简章</a></li>
-                        <li><a href="#">入学流程</a></li>
-                        <li><a href="#">学费标准</a></li>
-                        <li><a href="#">奖学金</a></li>
+                        <li><a href="#admission">招生简章</a></li>
+                        <li><a href="#admission">入学流程</a></li>
+                        <li><a href="#admission">学费标准</a></li>
+                        <li><a href="#admission">奖学金</a></li>
                     </ul>
                 </div>
                 
@@ -796,23 +942,57 @@
     </footer>
 
     <script>
-        // 登录功能实现
+        // 页面跳转和登录功能实现
         document.addEventListener('DOMContentLoaded', function() {
+            // 模拟用户数据库
+            const users = [
+                { username: 'admin', password: '123456', email: 'admin@sunshineschool.edu.cn' },
+                { username: 'teacher', password: 'teacher123', email: 'teacher@sunshineschool.edu.cn' },
+                { username: 'student', password: 'student123', email: 'student@sunshineschool.edu.cn' }
+            ];
+            
+            // 获取DOM元素
             const loginBtn = document.getElementById('loginBtn');
             const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const mobileRegisterBtn = document.getElementById('mobileRegisterBtn');
             const loginModal = document.getElementById('loginModal');
+            const registerModal = document.getElementById('registerModal');
             const closeModal = document.getElementById('closeModal');
+            const closeRegisterModal = document.getElementById('closeRegisterModal');
             const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
             const loginSuccess = document.getElementById('loginSuccess');
             const mobileMenuToggle = document.getElementById('mobileMenuToggle');
             const mobileMenu = document.getElementById('mobileMenu');
+            const toRegister = document.getElementById('toRegister');
+            const toLogin = document.getElementById('toLogin');
             
             // 打开登录模态框
             function openLoginModal() {
                 loginModal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // 防止背景滚动
+                document.body.style.overflow = 'hidden';
             }
             
+            // 打开注册模态框
+            function openRegisterModal() {
+                registerModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+            
+            // 关闭登录模态框
+            function closeLoginModal() {
+                loginModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // 关闭注册模态框
+            function closeRegisterModalFunc() {
+                registerModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // 登录按钮事件
             loginBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 openLoginModal();
@@ -821,27 +1001,51 @@
             mobileLoginBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 openLoginModal();
-                mobileMenu.classList.remove('active'); // 关闭移动菜单
+                mobileMenu.classList.remove('active');
             });
             
-            // 关闭登录模态框
-            function closeLoginModal() {
-                loginModal.classList.remove('active');
-                document.body.style.overflow = ''; // 恢复背景滚动
-            }
+            // 注册按钮事件
+            registerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openRegisterModal();
+            });
             
+            mobileRegisterBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                openRegisterModal();
+                mobileMenu.classList.remove('active');
+            });
+            
+            // 关闭模态框事件
             closeModal.addEventListener('click', closeLoginModal);
+            closeRegisterModal.addEventListener('click', closeRegisterModalFunc);
             
             // 点击模态框外部关闭
             window.addEventListener('click', function(e) {
                 if (e.target === loginModal) {
                     closeLoginModal();
                 }
+                if (e.target === registerModal) {
+                    closeRegisterModalFunc();
+                }
             });
             
             // 移动端菜单切换
             mobileMenuToggle.addEventListener('click', function() {
                 mobileMenu.classList.toggle('active');
+            });
+            
+            // 登录和注册切换
+            toRegister.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeLoginModal();
+                openRegisterModal();
+            });
+            
+            toLogin.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeRegisterModalFunc();
+                openLoginModal();
             });
             
             // 处理登录表单提交
@@ -851,13 +1055,12 @@
                 const username = document.getElementById('username').value;
                 const password = document.getElementById('password').value;
                 
-                // 简单验证
-                if (username && password) {
-                    // 在实际应用中，这里应该发送请求到服务器验证
-                    // 这里仅模拟登录成功
+                // 验证登录信息
+                const user = users.find(u => u.username === username && u.password === password);
+                
+                if (user) {
+                    // 登录成功
                     closeLoginModal();
-                    
-                    // 显示成功消息
                     loginSuccess.style.display = 'block';
                     
                     // 3秒后隐藏成功消息
@@ -866,9 +1069,63 @@
                     }, 3000);
                     
                     // 在实际应用中，这里应该跳转到用户主页或执行其他操作
+                    console.log('登录成功，用户:', user);
                 } else {
-                    alert('请输入用户名和密码！');
+                    alert('用户名或密码错误！');
                 }
+            });
+            
+            // 处理注册表单提交
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('reg-username').value;
+                const email = document.getElementById('reg-email').value;
+                const password = document.getElementById('reg-password').value;
+                const confirmPassword = document.getElementById('reg-confirm-password').value;
+                
+                // 验证表单
+                if (password !== confirmPassword) {
+                    alert('两次输入的密码不一致！');
+                    return;
+                }
+                
+                if (users.find(u => u.username === username)) {
+                    alert('用户名已存在！');
+                    return;
+                }
+                
+                if (users.find(u => u.email === email)) {
+                    alert('该邮箱已被注册！');
+                    return;
+                }
+                
+                // 模拟注册成功
+                users.push({ username, password, email });
+                alert('注册成功！请登录。');
+                closeRegisterModalFunc();
+                openLoginModal();
+            });
+            
+            // 平滑滚动到锚点
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 70,
+                            behavior: 'smooth'
+                        });
+                        
+                        // 关闭移动菜单
+                        mobileMenu.classList.remove('active');
+                    }
+                });
             });
         });
     </script>
