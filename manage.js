@@ -46,3 +46,21 @@ loginForm.addEventListener('submit', async function(e) {
     updateUI();
   }
 });
+// 添加到您的后端API中
+app.get('/api/test-db', async (req, res) => {
+  try {
+    // 简单数据库查询测试
+    const [result] = await pool.execute('SELECT 1 as test');
+    res.json({ 
+      status: 'success', 
+      message: '数据库连接正常',
+      data: result
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      status: 'error', 
+      message: '数据库连接失败',
+      error: error.message 
+    });
+  }
+});
