@@ -64,9 +64,35 @@
         .admin-panel, .user-dashboard {
             display: none;
         }
+        
+        .server-status {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-connected {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .status-disconnected {
+            background-color: #ef4444;
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- 服务器状态指示器 -->
+    <div id="server-status" class="server-status status-connected">
+        <i class="fas fa-server mr-1"></i> 服务器已连接
+    </div>
+
     <!-- 导航栏 -->
     <nav class="whu-blue text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
@@ -360,49 +386,20 @@
         </div>
     </div>
 
-    <!-- 用户仪表板 -->
-    <div id="user-dashboard" class="user-dashboard fixed inset-0 bg-gray-50 z-40 overflow-y-auto">
-        <div class="container mx-auto px-4 py-8">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">用户仪表板</h2>
-                    <button id="close-dashboard" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="bg-blue-50 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold mb-2">个人信息</h3>
-                        <p id="user-info" class="text-gray-700">加载中...</p>
-                    </div>
-                    <div class="bg-green-50 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold mb-2">校园服务</h3>
-                        <ul class="text-gray-700">
-                            <li class="mb-1">• 选课系统</li>
-                            <li class="mb-1">• 成绩查询</li>
-                            <li class="mb-1">• 图书馆</li>
-                            <li>• 校园卡服务</li>
-                        </ul>
-                    </div>
-                    <div class="bg-yellow-50 rounded-lg p-4">
-                        <h3 class="text-lg font-semibold mb-2">通知公告</h3>
-                        <p class="text-gray-700">暂无新通知</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- 管理员后台 -->
     <div id="admin-panel" class="admin-panel fixed inset-0 bg-gray-50 z-40 overflow-y-auto">
         <div class="container mx-auto px-4 py-8">
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">管理员后台</h2>
-                    <button id="close-admin" class="text-gray-500 hover:text-gray-700">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
+                    <div class="flex space-x-2">
+                        <button id="refresh-users" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300">
+                            <i class="fas fa-sync-alt mr-1"></i>刷新数据
+                        </button>
+                        <button id="close-admin" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition duration-300">
+                            <i class="fas fa-times mr-1"></i>返回首页
+                        </button>
+                    </div>
                 </div>
                 
                 <div class="mb-6">
@@ -416,12 +413,13 @@
                                     <th class="py-2 px-4">姓名</th>
                                     <th class="py-2 px-4">学号/工号</th>
                                     <th class="py-2 px-4">角色</th>
+                                    <th class="py-2 px-4">注册时间</th>
                                     <th class="py-2 px-4">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="users-table">
                                 <tr>
-                                    <td colspan="6" class="text-center py-4">加载用户数据中...</td>
+                                    <td colspan="7" class="text-center py-4">加载用户数据中...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -498,6 +496,23 @@
             }, 3000);
         }
 
+        // 检查Supabase连接状态
+        async function checkSupabaseConnection() {
+            try {
+                const { data, error } = await supabase.from('users').select('count').limit(1);
+                if (error) throw error;
+                
+                document.getElementById('server-status').className = 'server-status status-connected';
+                document.getElementById('server-status').innerHTML = '<i class="fas fa-server mr-1"></i> 服务器已连接';
+                return true;
+            } catch (error) {
+                console.error('Supabase连接失败:', error);
+                document.getElementById('server-status').className = 'server-status status-disconnected';
+                document.getElementById('server-status').innerHTML = '<i class="fas fa-server mr-1"></i> 服务器连接失败';
+                return false;
+            }
+        }
+
         // 检查用户认证状态
         async function checkAuth() {
             const { data: { user }, error } = await supabase.auth.getUser();
@@ -518,6 +533,12 @@
                 if (!userError && userData) {
                     currentUserRole = userData.role || 'student';
                     updateAuthButton(user.email, currentUserRole, userData.full_name);
+                    
+                    // 如果是管理员，自动显示后台管理页面
+                    if (currentUserRole === 'admin') {
+                        document.getElementById('admin-panel').style.display = 'block';
+                        loadAdminData();
+                    }
                 } else {
                     // 如果没有在users表中找到记录，默认为学生
                     currentUserRole = 'student';
@@ -562,7 +583,7 @@
                                 full_name: userData.full_name,
                                 student_id: userData.student_id,
                                 role: email === 'admin@whu.edu.cn' ? 'admin' : 'student',
-                                created_at: new Date()
+                                created_at: new Date().toISOString()
                             }
                         ]);
 
@@ -613,41 +634,116 @@
 
         // 加载管理员数据
         async function loadAdminData() {
-            // 模拟加载用户数据
-            setTimeout(() => {
+            try {
+                // 从数据库获取用户数据
+                const { data: users, error } = await supabase
+                    .from('users')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                let userCount = 0;
+                let adminCount = 0;
+                
+                if (users && users.length > 0) {
+                    let tableHTML = '';
+                    
+                    users.forEach(user => {
+                        userCount++;
+                        if (user.role === 'admin') adminCount++;
+                        
+                        const regDate = new Date(user.created_at).toLocaleDateString('zh-CN');
+                        
+                        tableHTML += `
+                            <tr>
+                                <td class="py-2 px-4 border-b">${user.id.substring(0, 8)}...</td>
+                                <td class="py-2 px-4 border-b">${user.email}</td>
+                                <td class="py-2 px-4 border-b">${user.full_name || '未设置'}</td>
+                                <td class="py-2 px-4 border-b">${user.student_id || '未设置'}</td>
+                                <td class="py-2 px-4 border-b">
+                                    <span class="${user.role === 'admin' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'} px-2 py-1 rounded text-sm">
+                                        ${user.role === 'admin' ? '管理员' : '学生'}
+                                    </span>
+                                </td>
+                                <td class="py-2 px-4 border-b">${regDate}</td>
+                                <td class="py-2 px-4 border-b">
+                                    <button class="edit-user bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 transition duration-300" data-id="${user.id}">编辑</button>
+                                    <button class="delete-user bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600 transition duration-300 ml-1" data-id="${user.id}">删除</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                    
+                    document.getElementById('users-table').innerHTML = tableHTML;
+                    
+                    // 添加编辑和删除按钮的事件监听
+                    document.querySelectorAll('.edit-user').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const userId = this.getAttribute('data-id');
+                            editUser(userId);
+                        });
+                    });
+                    
+                    document.querySelectorAll('.delete-user').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const userId = this.getAttribute('data-id');
+                            deleteUser(userId);
+                        });
+                    });
+                } else {
+                    document.getElementById('users-table').innerHTML = `
+                        <tr>
+                            <td colspan="7" class="text-center py-4">暂无用户数据</td>
+                        </tr>
+                    `;
+                }
+                
+                document.getElementById('user-count').textContent = userCount;
+                document.getElementById('admin-count').textContent = adminCount;
+                document.getElementById('login-today').textContent = Math.floor(Math.random() * 10) + 1; // 模拟今日登录数
+                
+            } catch (error) {
+                console.error('加载用户数据失败:', error);
                 document.getElementById('users-table').innerHTML = `
                     <tr>
-                        <td class="py-2 px-4 border-b">1</td>
-                        <td class="py-2 px-4 border-b">admin@whu.edu.cn</td>
-                        <td class="py-2 px-4 border-b">系统管理员</td>
-                        <td class="py-2 px-4 border-b">A10001</td>
-                        <td class="py-2 px-4 border-b"><span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">管理员</span></td>
-                        <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 transition duration-300">编辑</button>
-                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600 transition duration-300 ml-1">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="py-2 px-4 border-b">2</td>
-                        <td class="py-2 px-4 border-b">student1@whu.edu.cn</td>
-                        <td class="py-2 px-4 border-b">张三</td>
-                        <td class="py-2 px-4 border-b">2021301001001</td>
-                        <td class="py-2 px-4 border-b"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">学生</span></td>
-                        <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 transition duration-300">编辑</button>
-                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600 transition duration-300 ml-1">删除</button>
-                        </td>
+                        <td colspan="7" class="text-center py-4 text-red-500">加载用户数据失败: ${error.message}</td>
                     </tr>
                 `;
-                
-                document.getElementById('user-count').textContent = '15';
-                document.getElementById('admin-count').textContent = '2';
-                document.getElementById('login-today').textContent = '8';
-            }, 1000);
+            }
+        }
+
+        // 编辑用户
+        async function editUser(userId) {
+            showMessage('编辑用户功能正在开发中...', 'info');
+        }
+
+        // 删除用户
+        async function deleteUser(userId) {
+            if (confirm('确定要删除此用户吗？此操作不可恢复。')) {
+                try {
+                    const { error } = await supabase
+                        .from('users')
+                        .delete()
+                        .eq('id', userId);
+                    
+                    if (error) throw error;
+                    
+                    showMessage('用户删除成功', 'success');
+                    loadAdminData(); // 重新加载数据
+                } catch (error) {
+                    console.error('删除用户失败:', error);
+                    showMessage('删除用户失败: ' + error.message, 'error');
+                }
+            }
         }
 
         // 页面加载时检查认证状态
         document.addEventListener('DOMContentLoaded', () => {
+            // 检查Supabase连接状态
+            checkSupabaseConnection();
+            
+            // 检查用户认证状态
             checkAuth().then(user => {
                 if (user) {
                     console.log('用户已登录:', user.email);
@@ -678,8 +774,7 @@
                         document.getElementById('admin-panel').style.display = 'block';
                         loadAdminData();
                     } else {
-                        document.getElementById('user-dashboard').style.display = 'block';
-                        document.getElementById('user-info').textContent = `欢迎，${currentUser.email}`;
+                        showMessage('您已登录，但没有管理员权限', 'info');
                     }
                 } else {
                     // 如果未登录，显示登录模态框
@@ -696,12 +791,14 @@
                 document.getElementById('register-modal').style.display = 'none';
             });
             
-            document.getElementById('close-dashboard').addEventListener('click', function() {
-                document.getElementById('user-dashboard').style.display = 'none';
-            });
-            
             document.getElementById('close-admin').addEventListener('click', function() {
                 document.getElementById('admin-panel').style.display = 'none';
+            });
+            
+            // 刷新用户数据按钮
+            document.getElementById('refresh-users').addEventListener('click', function() {
+                loadAdminData();
+                showMessage('用户数据已刷新', 'success');
             });
             
             // 切换登录/注册模态框
@@ -760,9 +857,6 @@
                         if (currentUserRole === 'admin') {
                             document.getElementById('admin-panel').style.display = 'block';
                             loadAdminData();
-                        } else {
-                            document.getElementById('user-dashboard').style.display = 'block';
-                            document.getElementById('user-info').textContent = `欢迎，${userData.full_name} (${data.user.email})`;
                         }
                     }
                 }
