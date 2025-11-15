@@ -79,34 +79,34 @@
     <script src="js/supabase-client.js"></script>
     <script src="js/auth.js"></script>
     <script>
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+       document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    const { data, error } = await signIn(email, password);
+    
+    if (error) {
+        alert('登录失败: ' + error.message);
+    } else {
+        // 检查用户角色
+        const { data: userData, error: userError } = await supabase
+            .from('users')
+            .select('role')
+            .eq('id', data.user.id)
+            .single();
             
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            const { data, error } = await signIn(email, password);
-            
-            if (error) {
-                alert('登录失败: ' + error.message);
-            } else {
-                // 根据用户角色跳转不同页面
-                const user = data.user;
-                // 这里可以添加角色检查逻辑
-                if (user.email === 'admin@whu.edu.cn') {
-                    window.location.href = 'admin.html';
-                } else {
-                    window.location.href = 'dashboard.html';
-                }
-            }
-        });
-
-        // 检查是否已登录
-        checkAuth().then(user => {
-            if (user) {
-                window.location.href = 'dashboard.html';
-            }
-        });
+        if (userError) {
+            console.error('获取用户角色失败:', userError);
+            window.location.href = 'dashboard.html';
+        } else if (userData.role === 'admin') {
+            window.location.href = 'admin.html';
+        } else {
+            window.location.href = 'dashboard.html';
+        }
+    }
+});
     </script>
 </body>
 </html>
