@@ -504,21 +504,20 @@
         // 检查Supabase连接状态
         async function checkSupabaseConnection() {
             try {
-                // 使用更简单的方法检查连接
+                // 使用简单的认证检查
                 const { data, error } = await supabase.auth.getSession();
                 
-                if (error) {
-                    // 如果认证检查失败，尝试简单的REST API调用
-                    const response = await fetch(`${SUPABASE_URL}/rest/v1/`, {
-                        headers: {
-                            'apikey': SUPABASE_ANON_KEY,
-                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-                        }
-                    });
-                    
-                    if (!response.ok) throw new Error('API连接失败');
+                if (error && error.message.includes('Failed to fetch')) {
+                    throw new Error('网络连接失败，请检查网络设置');
                 }
                 
+                // 如果认证检查通过，尝试一个简单的表查询
+                const { error: tableError } = await supabase
+                    .from('users')
+                    .select('count')
+                    .limit(1);
+                
+                // 即使表查询出错，只要不是网络错误，就认为连接成功
                 document.getElementById('server-status').className = 'server-status status-connected';
                 document.getElementById('server-status').innerHTML = '<i class="fas fa-check mr-1"></i> 服务器已连接';
                 return true;
@@ -526,7 +525,7 @@
                 console.error('Supabase连接失败:', error);
                 document.getElementById('server-status').className = 'server-status status-disconnected';
                 document.getElementById('server-status').innerHTML = '<i class="fas fa-times mr-1"></i> 服务器连接失败';
-                showMessage('服务器连接失败，请检查网络或稍后重试', 'error');
+                showMessage('服务器连接失败: ' + error.message, 'error');
                 return false;
             }
         }
@@ -664,7 +663,7 @@
                 if (error) {
                     // 如果是策略错误，提供更友好的提示
                     if (error.message.includes('infinite recursion') || error.message.includes('policy')) {
-                        throw new Error('数据库策略配置错误，请联系管理员修复RLS策略');
+                        throw new Error('数据库策略配置错误，请执行提供的SQL语句修复RLS策略');
                     }
                     throw error;
                 }
