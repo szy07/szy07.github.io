@@ -24,3 +24,25 @@ registerForm.addEventListener('submit', async function(e) {
     openLoginModal();
   }
 });
+// 使用Supabase处理登录
+loginForm.addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('username').value; // 或改为email字段
+  const password = document.getElementById('password').value;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email,
+    password: password,
+  });
+
+  if (error) {
+    alert('登录失败: ' + error.message);
+  } else {
+    // 登录成功
+    localStorage.setItem('currentUser', JSON.stringify(data.user));
+    closeLoginModalFunc();
+    showLoginSuccess();
+    updateUI();
+  }
+});
