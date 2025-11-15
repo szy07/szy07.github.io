@@ -90,9 +90,29 @@
             background-color: #f59e0b;
             color: white;
         }
+        
+        .debug-panel {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            max-width: 300px;
+            z-index: 1000;
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
+    <!-- 调试面板 -->
+    <div id="debug-panel" class="debug-panel">
+        <div class="font-bold mb-2">调试信息</div>
+        <div id="debug-info">正在初始化...</div>
+    </div>
+
     <!-- 服务器状态指示器 -->
     <div id="server-status" class="server-status status-checking">
         <i class="fas fa-circle-notch fa-spin mr-1"></i> 检查服务器连接...
@@ -155,142 +175,6 @@
             </div>
         </div>
     </section>
-
-    <!-- 新闻动态 -->
-    <section id="news" class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">新闻动态</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
-                    <div class="h-48 bg-blue-200 flex items-center justify-center">
-                        <span class="text-gray-600">新闻图片</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">武汉大学召开2023年本科教育工作会</h3>
-                        <p class="text-gray-600 mb-4">10月15日，武汉大学2023年本科教育工作会在人文馆主厅召开...</p>
-                        <a href="#" class="text-blue-600 hover:underline">阅读更多</a>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
-                    <div class="h-48 bg-green-200 flex items-center justify-center">
-                        <span class="text-gray-600">新闻图片</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">武大学子在第八届中国国际"互联网+"大赛中获佳绩</h3>
-                        <p class="text-gray-600 mb-4">在刚刚结束的第八届中国国际"互联网+"大学生创新创业大赛全国总决赛中...</p>
-                        <a href="#" class="text-blue-600 hover:underline">阅读更多</a>
-                    </div>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
-                    <div class="h-48 bg-yellow-200 flex items-center justify-center">
-                        <span class="text-gray-600">新闻图片</span>
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-semibold mb-2">武汉大学新增两个ESI前1%学科</h3>
-                        <p class="text-gray-600 mb-4">根据科睿唯安最新公布的ESI数据显示，武汉大学新增两个进入ESI全球排名前1%的学科...</p>
-                        <a href="#" class="text-blue-600 hover:underline">阅读更多</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 校园服务 -->
-    <section id="services" class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">校园服务</h2>
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
-                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-book text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">图书馆</h3>
-                    <p class="text-gray-600">丰富的图书资源和电子文献</p>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
-                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-graduation-cap text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">教务系统</h3>
-                    <p class="text-gray-600">选课、成绩查询、课表查看</p>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
-                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-id-card text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">校园卡</h3>
-                    <p class="text-gray-600">消费、门禁、图书借阅一体化</p>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
-                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-laptop text-white text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">网络服务</h3>
-                    <p class="text-gray-600">校园网、VPN、邮箱服务</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 页脚 -->
-    <footer class="whu-blue text-white py-12">
-        <div class="container mx-auto px-4">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div>
-                    <div class="flex items-center space-x-2 mb-4">
-                        <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center">
-                            <span class="text-blue-800 font-bold">武</span>
-                        </div>
-                        <span class="text-xl font-bold">武汉大学</span>
-                    </div>
-                    <p class="text-sm">自强 弘毅 求是 拓新</p>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">快速链接</h3>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-whu-gold transition duration-300">学校首页</a></li>
-                        <li><a href="#" class="hover:text-whu-gold transition duration-300">招生信息</a></li>
-                        <li><a href="#" class="hover:text-whu-gold transition duration-300">人才招聘</a></li>
-                        <li><a href="#" class="hover:text-whu-gold transition duration-300">联系我们</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">联系我们</h3>
-                    <ul class="space-y-2">
-                        <li><i class="fas fa-map-marker-alt mr-2"></i>湖北省武汉市珞珈山16号</li>
-                        <li><i class="fas fa-phone mr-2"></i>(+86) 027-6875XXXX</li>
-                        <li><i class="fas fa-envelope mr-2"></i>info@whu.edu.cn</li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h3 class="text-lg font-semibold mb-4">关注我们</h3>
-                    <div class="flex space-x-4">
-                        <a href="#" class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-blue-800 hover:bg-gray-200 transition duration-300">
-                            <i class="fab fa-weixin"></i>
-                        </a>
-                        <a href="#" class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-blue-800 hover:bg-gray-200 transition duration-300">
-                            <i class="fab fa-weibo"></i>
-                        </a>
-                        <a href="#" class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-blue-800 hover:bg-gray-200 transition duration-300">
-                            <i class="fab fa-qq"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="border-t border-blue-700 mt-8 pt-8 text-center text-sm">
-                <p>© 2023 武汉大学 版权所有 | 鄂ICP备XXXXXXXX号</p>
-            </div>
-        </div>
-    </footer>
 
     <!-- 登录模态框 -->
     <div id="login-modal" class="modal">
@@ -419,12 +303,11 @@
                                     <th class="py-2 px-4">学号/工号</th>
                                     <th class="py-2 px-4">角色</th>
                                     <th class="py-2 px-4">注册时间</th>
-                                    <th class="py-2 px-4">操作</th>
                                 </tr>
                             </thead>
                             <tbody id="users-table">
                                 <tr>
-                                    <td colspan="7" class="text-center py-4">加载用户数据中...</td>
+                                    <td colspan="6" class="text-center py-4">加载用户数据中...</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -473,6 +356,12 @@
         let currentUser = null;
         let currentUserRole = 'guest';
 
+        // 调试函数
+        function debug(message) {
+            console.log(message);
+            document.getElementById('debug-info').innerHTML += message + '<br>';
+        }
+
         // 显示消息提示
         function showMessage(message, type = 'info') {
             const messageEl = document.getElementById('message');
@@ -504,28 +393,42 @@
         // 检查Supabase连接状态
         async function checkSupabaseConnection() {
             try {
+                debug('开始检查Supabase连接...');
+                
                 // 使用简单的认证检查
                 const { data, error } = await supabase.auth.getSession();
+                debug('认证检查完成');
                 
-                if (error && error.message.includes('Failed to fetch')) {
-                    throw new Error('网络连接失败，请检查网络设置');
+                if (error) {
+                    debug('认证错误: ' + error.message);
+                    throw error;
                 }
                 
                 // 如果认证检查通过，尝试一个简单的表查询
-                const { error: tableError } = await supabase
+                debug('尝试查询用户表...');
+                const { data: users, error: tableError } = await supabase
                     .from('users')
                     .select('count')
                     .limit(1);
                 
-                // 即使表查询出错，只要不是网络错误，就认为连接成功
+                if (tableError) {
+                    debug('表查询错误: ' + tableError.message);
+                    // 即使表查询出错，只要不是网络错误，就认为连接成功
+                    if (tableError.message.includes('Failed to fetch')) {
+                        throw new Error('网络连接失败');
+                    }
+                }
+                
                 document.getElementById('server-status').className = 'server-status status-connected';
                 document.getElementById('server-status').innerHTML = '<i class="fas fa-check mr-1"></i> 服务器已连接';
+                debug('连接成功');
                 return true;
             } catch (error) {
                 console.error('Supabase连接失败:', error);
                 document.getElementById('server-status').className = 'server-status status-disconnected';
                 document.getElementById('server-status').innerHTML = '<i class="fas fa-times mr-1"></i> 服务器连接失败';
                 showMessage('服务器连接失败: ' + error.message, 'error');
+                debug('连接失败: ' + error.message);
                 return false;
             }
         }
@@ -533,37 +436,51 @@
         // 检查用户认证状态
         async function checkAuth() {
             try {
+                debug('检查用户认证状态...');
                 const { data: { user }, error } = await supabase.auth.getUser();
                 if (error) throw error;
                 
                 if (user) {
                     currentUser = user;
+                    debug('用户已登录: ' + user.email);
+                    
                     // 获取用户角色
-                    const { data: userData, error: userError } = await supabase
-                        .from('users')
-                        .select('role, full_name, student_id')
-                        .eq('id', user.id)
-                        .single();
-                        
-                    if (!userError && userData) {
-                        currentUserRole = userData.role || 'student';
-                        updateAuthButton(user.email, currentUserRole, userData.full_name);
-                        
-                        // 如果是管理员，自动显示后台管理页面
-                        if (currentUserRole === 'admin') {
-                            document.getElementById('admin-panel').style.display = 'block';
-                            loadAdminData();
+                    try {
+                        const { data: userData, error: userError } = await supabase
+                            .from('users')
+                            .select('role, full_name, student_id')
+                            .eq('id', user.id)
+                            .single();
+                            
+                        if (!userError && userData) {
+                            currentUserRole = userData.role || 'student';
+                            updateAuthButton(user.email, currentUserRole, userData.full_name);
+                            debug('用户角色: ' + currentUserRole);
+                            
+                            // 如果是管理员，自动显示后台管理页面
+                            if (currentUserRole === 'admin') {
+                                document.getElementById('admin-panel').style.display = 'block';
+                                loadAdminData();
+                            }
+                        } else {
+                            // 如果没有在users表中找到记录，默认为学生
+                            currentUserRole = 'student';
+                            updateAuthButton(user.email, 'student', '用户');
+                            debug('未找到用户记录，默认角色: student');
                         }
-                    } else {
-                        // 如果没有在users表中找到记录，默认为学生
+                    } catch (dbError) {
+                        debug('查询用户数据错误: ' + dbError.message);
                         currentUserRole = 'student';
                         updateAuthButton(user.email, 'student', '用户');
                     }
+                } else {
+                    debug('用户未登录');
                 }
                 
                 return user;
             } catch (error) {
                 console.error('检查认证状态出错:', error);
+                debug('认证检查错误: ' + error.message);
                 return null;
             }
         }
@@ -581,6 +498,7 @@
         // 邮箱密码注册
         async function signUp(email, password, userData) {
             try {
+                debug('开始注册用户: ' + email);
                 const { data, error } = await supabase.auth.signUp({
                     email: email,
                     password: password,
@@ -592,6 +510,7 @@
                 if (error) throw error;
                 
                 if (data.user) {
+                    debug('认证注册成功，开始保存用户信息到数据库');
                     // 将用户信息保存到数据库
                     const { error: dbError } = await supabase
                         .from('users')
@@ -608,8 +527,10 @@
 
                     if (dbError) {
                         console.error('保存用户信息出错:', dbError);
+                        debug('保存用户信息错误: ' + dbError.message);
                         showMessage('注册成功，但保存用户信息时出错', 'error');
                     } else {
+                        debug('用户信息保存成功');
                         showMessage('注册成功！请检查邮箱验证邮件。', 'success');
                     }
                 }
@@ -617,6 +538,7 @@
                 return { data, error: null };
             } catch (error) {
                 console.error('注册出错:', error);
+                debug('注册错误: ' + error.message);
                 return { data: null, error };
             }
         }
@@ -624,15 +546,18 @@
         // 邮箱密码登录
         async function signIn(email, password) {
             try {
+                debug('开始登录: ' + email);
                 const { data, error } = await supabase.auth.signInWithPassword({
                     email: email,
                     password: password
                 });
 
                 if (error) throw error;
+                debug('登录成功');
                 return { data, error: null };
             } catch (error) {
                 console.error('登录出错:', error);
+                debug('登录错误: ' + error.message);
                 return { data: null, error };
             }
         }
@@ -654,6 +579,7 @@
         // 加载管理员数据
         async function loadAdminData() {
             try {
+                debug('开始加载管理员数据...');
                 // 从数据库获取用户数据
                 const { data: users, error } = await supabase
                     .from('users')
@@ -661,6 +587,7 @@
                     .order('created_at', { ascending: false });
 
                 if (error) {
+                    debug('加载用户数据错误: ' + error.message);
                     // 如果是策略错误，提供更友好的提示
                     if (error.message.includes('infinite recursion') || error.message.includes('policy')) {
                         throw new Error('数据库策略配置错误，请执行提供的SQL语句修复RLS策略');
@@ -668,6 +595,7 @@
                     throw error;
                 }
 
+                debug('成功加载用户数据，数量: ' + (users ? users.length : 0));
                 let userCount = 0;
                 let adminCount = 0;
                 
@@ -692,34 +620,15 @@
                                     </span>
                                 </td>
                                 <td class="py-2 px-4 border-b">${regDate}</td>
-                                <td class="py-2 px-4 border-b">
-                                    <button class="edit-user bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 transition duration-300" data-id="${user.id}">编辑</button>
-                                    <button class="delete-user bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600 transition duration-300 ml-1" data-id="${user.id}">删除</button>
-                                </td>
                             </tr>
                         `;
                     });
                     
                     document.getElementById('users-table').innerHTML = tableHTML;
-                    
-                    // 添加编辑和删除按钮的事件监听
-                    document.querySelectorAll('.edit-user').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const userId = this.getAttribute('data-id');
-                            editUser(userId);
-                        });
-                    });
-                    
-                    document.querySelectorAll('.delete-user').forEach(button => {
-                        button.addEventListener('click', function() {
-                            const userId = this.getAttribute('data-id');
-                            deleteUser(userId);
-                        });
-                    });
                 } else {
                     document.getElementById('users-table').innerHTML = `
                         <tr>
-                            <td colspan="7" class="text-center py-4">暂无用户数据</td>
+                            <td colspan="6" class="text-center py-4">暂无用户数据</td>
                         </tr>
                     `;
                 }
@@ -732,40 +641,18 @@
                 console.error('加载用户数据失败:', error);
                 document.getElementById('users-table').innerHTML = `
                     <tr>
-                        <td colspan="7" class="text-center py-4 text-red-500">加载用户数据失败: ${error.message}</td>
+                        <td colspan="6" class="text-center py-4 text-red-500">加载用户数据失败: ${error.message}</td>
                     </tr>
                 `;
                 showMessage('加载用户数据失败: ' + error.message, 'error');
             }
         }
 
-        // 编辑用户
-        async function editUser(userId) {
-            showMessage('编辑用户功能正在开发中...', 'info');
-        }
-
-        // 删除用户
-        async function deleteUser(userId) {
-            if (confirm('确定要删除此用户吗？此操作不可恢复。')) {
-                try {
-                    const { error } = await supabase
-                        .from('users')
-                        .delete()
-                        .eq('id', userId);
-                    
-                    if (error) throw error;
-                    
-                    showMessage('用户删除成功', 'success');
-                    loadAdminData(); // 重新加载数据
-                } catch (error) {
-                    console.error('删除用户失败:', error);
-                    showMessage('删除用户失败: ' + error.message, 'error');
-                }
-            }
-        }
-
         // 页面加载时检查认证状态
         document.addEventListener('DOMContentLoaded', () => {
+            // 显示调试面板
+            document.getElementById('debug-panel').style.display = 'block';
+            
             // 检查Supabase连接状态
             checkSupabaseConnection();
             
