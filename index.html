@@ -85,12 +85,17 @@
             background-color: #ef4444;
             color: white;
         }
+        
+        .status-checking {
+            background-color: #f59e0b;
+            color: white;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- 服务器状态指示器 -->
-    <div id="server-status" class="server-status status-connected">
-        <i class="fas fa-server mr-1"></i> 服务器已连接
+    <div id="server-status" class="server-status status-checking">
+        <i class="fas fa-circle-notch fa-spin mr-1"></i> 检查服务器连接...
     </div>
 
     <!-- 导航栏 -->
@@ -499,63 +504,78 @@
         // 检查Supabase连接状态
         async function checkSupabaseConnection() {
             try {
-                const { data, error } = await supabase.from('users').select('count').limit(1);
-                if (error) throw error;
+                // 使用更简单的方法检查连接
+                const { data, error } = await supabase.auth.getSession();
+                
+                if (error) {
+                    // 如果认证检查失败，尝试简单的REST API调用
+                    const response = await fetch(`${SUPABASE_URL}/rest/v1/`, {
+                        headers: {
+                            'apikey': SUPABASE_ANON_KEY,
+                            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+                        }
+                    });
+                    
+                    if (!response.ok) throw new Error('API连接失败');
+                }
                 
                 document.getElementById('server-status').className = 'server-status status-connected';
-                document.getElementById('server-status').innerHTML = '<i class="fas fa-server mr-1"></i> 服务器已连接';
+                document.getElementById('server-status').innerHTML = '<i class="fas fa-check mr-1"></i> 服务器已连接';
                 return true;
             } catch (error) {
                 console.error('Supabase连接失败:', error);
                 document.getElementById('server-status').className = 'server-status status-disconnected';
-                document.getElementById('server-status').innerHTML = '<i class="fas fa-server mr-1"></i> 服务器连接失败';
+                document.getElementById('server-status').innerHTML = '<i class="fas fa-times mr-1"></i> 服务器连接失败';
+                showMessage('服务器连接失败，请检查网络或稍后重试', 'error');
                 return false;
             }
         }
 
         // 检查用户认证状态
         async function checkAuth() {
-            const { data: { user }, error } = await supabase.auth.getUser();
-            if (error) {
+            try {
+                const { data: { user }, error } = await supabase.auth.getUser();
+                if (error) throw error;
+                
+                if (user) {
+                    currentUser = user;
+                    // 获取用户角色
+                    const { data: userData, error: userError } = await supabase
+                        .from('users')
+                        .select('role, full_name, student_id')
+                        .eq('id', user.id)
+                        .single();
+                        
+                    if (!userError && userData) {
+                        currentUserRole = userData.role || 'student';
+                        updateAuthButton(user.email, currentUserRole, userData.full_name);
+                        
+                        // 如果是管理员，自动显示后台管理页面
+                        if (currentUserRole === 'admin') {
+                            document.getElementById('admin-panel').style.display = 'block';
+                            loadAdminData();
+                        }
+                    } else {
+                        // 如果没有在users表中找到记录，默认为学生
+                        currentUserRole = 'student';
+                        updateAuthButton(user.email, 'student', '用户');
+                    }
+                }
+                
+                return user;
+            } catch (error) {
                 console.error('检查认证状态出错:', error);
                 return null;
             }
-            
-            if (user) {
-                currentUser = user;
-                // 获取用户角色
-                const { data: userData, error: userError } = await supabase
-                    .from('users')
-                    .select('role, full_name, student_id')
-                    .eq('id', user.id)
-                    .single();
-                    
-                if (!userError && userData) {
-                    currentUserRole = userData.role || 'student';
-                    updateAuthButton(user.email, currentUserRole, userData.full_name);
-                    
-                    // 如果是管理员，自动显示后台管理页面
-                    if (currentUserRole === 'admin') {
-                        document.getElementById('admin-panel').style.display = 'block';
-                        loadAdminData();
-                    }
-                } else {
-                    // 如果没有在users表中找到记录，默认为学生
-                    currentUserRole = 'student';
-                    updateAuthButton(user.email, 'student', '用户');
-                }
-            }
-            
-            return user;
         }
 
         // 更新认证按钮状态
         function updateAuthButton(email, role, name) {
             const authBtn = document.getElementById('auth-btn');
             if (role === 'admin') {
-                authBtn.innerHTML = `<i class="fas fa-user-shield mr-1"></i>${name} (管理员)`;
+                authBtn.innerHTML = `<i class="fas fa-user-shield mr-1"></i>${name || '管理员'}`;
             } else {
-                authBtn.innerHTML = `<i class="fas fa-user mr-1"></i>${name}`;
+                authBtn.innerHTML = `<i class="fas fa-user mr-1"></i>${name || '用户'}`;
             }
         }
 
@@ -641,7 +661,13 @@
                     .select('*')
                     .order('created_at', { ascending: false });
 
-                if (error) throw error;
+                if (error) {
+                    // 如果是策略错误，提供更友好的提示
+                    if (error.message.includes('infinite recursion') || error.message.includes('policy')) {
+                        throw new Error('数据库策略配置错误，请联系管理员修复RLS策略');
+                    }
+                    throw error;
+                }
 
                 let userCount = 0;
                 let adminCount = 0;
@@ -710,6 +736,7 @@
                         <td colspan="7" class="text-center py-4 text-red-500">加载用户数据失败: ${error.message}</td>
                     </tr>
                 `;
+                showMessage('加载用户数据失败: ' + error.message, 'error');
             }
         }
 
