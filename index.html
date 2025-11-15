@@ -3,91 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>武汉大学信息门户 - 登录注册</title>
+    <title>武汉大学 - 信息门户</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
-        .whu-blue { background-color: #1e3a8a; }
-        .whu-light-blue { background-color: #3b82f6; }
-        .whu-gold { color: #d4af37; }
-        .bg-whu-pattern { 
-            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.9)), 
-                        url('https://www.whu.edu.cn/__local/B/0B/98/E6C7F0A8F6A6D6D4F6A2F3F3F3F3F3F3F3F3F3F3.jpg') no-repeat center center;
+        :root {
+            --whu-blue: #1e3a8a;
+            --whu-light-blue: #3b82f6;
+            --whu-gold: #d4af37;
+        }
+        
+        .whu-blue { background-color: var(--whu-blue); }
+        .whu-light-blue { background-color: var(--whu-light-blue); }
+        .text-whu-gold { color: var(--whu-gold); }
+        
+        .hero-section {
+            background: linear-gradient(rgba(30, 58, 138, 0.85), rgba(30, 58, 138, 0.9)), 
+                        url('https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center;
             background-size: cover;
+            height: 70vh;
         }
-        .admin-panel {
+        
+        .card-hover {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
         }
-        .user-dashboard {
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .admin-panel, .user-dashboard {
             display: none;
         }
     </style>
 </head>
 <body class="bg-gray-50">
     <!-- 导航栏 -->
-    <nav class="whu-blue text-white shadow-lg">
+    <nav class="whu-blue text-white shadow-lg sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
                 <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center">
                     <span class="text-blue-800 font-bold">武</span>
                 </div>
-                <span class="text-xl font-bold">武汉大学信息门户</span>
+                <span class="text-xl font-bold">武汉大学</span>
             </div>
             <div class="space-x-4">
-                <a href="#" class="hover:text-whu-gold" id="nav-home">首页</a>
-                <a href="#login" class="hover:text-whu-gold" id="nav-login">登录</a>
-                <a href="#register" class="hover:text-whu-gold" id="nav-register">注册</a>
-                <a href="#" class="hover:text-whu-gold hidden" id="nav-dashboard">仪表板</a>
-                <a href="#" class="hover:text-whu-gold hidden" id="nav-admin">管理后台</a>
-                <a href="#" class="hover:text-whu-gold hidden" id="nav-logout">退出</a>
+                <a href="#" class="hover:text-whu-gold transition duration-300">首页</a>
+                <a href="#about" class="hover:text-whu-gold transition duration-300">学校概况</a>
+                <a href="#news" class="hover:text-whu-gold transition duration-300">新闻动态</a>
+                <a href="#services" class="hover:text-whu-gold transition duration-300">校园服务</a>
+                <button id="auth-btn" class="bg-white text-blue-800 px-4 py-1 rounded-lg hover:bg-gray-100 transition duration-300">
+                    <i class="fas fa-user mr-1"></i>登录/注册
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- 主内容区 -->
-    <div class="container mx-auto px-4 py-8">
-        <!-- 武大简介 -->
-        <section class="mb-12" id="home-section">
-            <div class="bg-white rounded-lg shadow-md p-6">
-                <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">欢迎来到武汉大学信息门户</h1>
-                <div class="flex flex-col md:flex-row items-center">
-                    <div class="md:w-1/2 mb-6 md:mb-0">
-                        <p class="text-gray-700 mb-4">
-                            武汉大学是国家教育部直属重点综合性大学，是国家"985工程"和"211工程"重点建设高校，是首批"双一流"建设高校。
-                        </p>
-                        <p class="text-gray-700 mb-4">
-                            学校溯源于1893年清末湖广总督张之洞奏请清政府创办的自强学堂，历经传承演变，1928年定名为国立武汉大学，是近代中国第一批国立大学。
-                        </p>
-                        <p class="text-gray-700">
-                            武汉大学环绕东湖水，坐拥珞珈山，校园环境优美，风景如画，被誉为"中国最美丽的大学"。
-                        </p>
-                    </div>
-                    <div class="md:w-1/2 flex justify-center">
-                        <div class="bg-gray-200 h-64 w-64 rounded-lg flex items-center justify-center">
-                            <span class="text-gray-500">武汉大学校园风景图</span>
-                        </div>
+    <!-- 英雄区域 -->
+    <section class="hero-section text-white flex items-center">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">欢迎来到武汉大学</h1>
+            <p class="text-xl mb-8 max-w-2xl mx-auto">自强 弘毅 求是 拓新</p>
+            <a href="#about" class="bg-white text-blue-800 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
+                了解更多
+            </a>
+        </div>
+    </section>
+
+    <!-- 学校概况 -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">学校概况</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4 text-whu-gold">百年学府，底蕴深厚</h3>
+                    <p class="text-gray-700 mb-4">
+                        武汉大学是国家教育部直属重点综合性大学，是国家"985工程"和"211工程"重点建设高校，是首批"双一流"建设高校。
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        学校溯源于1893年清末湖广总督张之洞奏请清政府创办的自强学堂，历经传承演变，1928年定名为国立武汉大学，是近代中国第一批国立大学。
+                    </p>
+                    <p class="text-gray-700">
+                        武汉大学环绕东湖水，坐拥珞珈山，校园环境优美，风景如画，被誉为"中国最美丽的大学"。
+                    </p>
+                </div>
+                <div class="flex justify-center">
+                    <div class="bg-gray-200 h-80 w-full rounded-lg flex items-center justify-center">
+                        <span class="text-gray-500">武汉大学校园风景图</span>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- 登录注册区域 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="auth-section">
-            <!-- 登录表单 -->
-            <div id="login" class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">用户登录</h2>
+    <!-- 新闻动态 -->
+    <section id="news" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">新闻动态</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <div class="h-48 bg-blue-200 flex items-center justify-center">
+                        <span class="text-gray-600">新闻图片</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">武汉大学召开2023年本科教育工作会</h3>
+                        <p class="text-gray-600 mb-4">10月15日，武汉大学2023年本科教育工作会在人文馆主厅召开...</p>
+                        <a href="#" class="text-blue-600 hover:underline">阅读更多</a>
+                    </div>
+                </div>
                 
-                <form id="loginForm">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <div class="h-48 bg-green-200 flex items-center justify-center">
+                        <span class="text-gray-600">新闻图片</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">武大学子在第八届中国国际"互联网+"大赛中获佳绩</h3>
+                        <p class="text-gray-600 mb-4">在刚刚结束的第八届中国国际"互联网+"大学生创新创业大赛全国总决赛中...</p>
+                        <a href="#" class="text-blue-600 hover:underline">阅读更多</a>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md overflow-hidden card-hover">
+                    <div class="h-48 bg-yellow-200 flex items-center justify-center">
+                        <span class="text-gray-600">新闻图片</span>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">武汉大学新增两个ESI前1%学科</h3>
+                        <p class="text-gray-600 mb-4">根据科睿唯安最新公布的ESI数据显示，武汉大学新增两个进入ESI全球排名前1%的学科...</p>
+                        <a href="#" class="text-blue-600 hover:underline">阅读更多</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 校园服务 -->
+    <section id="services" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">校园服务</h2>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-book text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">图书馆</h3>
+                    <p class="text-gray-600">丰富的图书资源和电子文献</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-graduation-cap text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">教务系统</h3>
+                    <p class="text-gray-600">选课、成绩查询、课表查看</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-id-card text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">校园卡</h3>
+                    <p class="text-gray-600">消费、门禁、图书借阅一体化</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center card-hover">
+                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-laptop text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-2">网络服务</h3>
+                    <p class="text-gray-600">校园网、VPN、邮箱服务</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="whu-blue text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center">
+                            <span class="text-blue-800 font-bold">武</span>
+                        </div>
+                        <span class="text-xl font-bold">武汉大学</span>
+                    </div>
+                    <p class="text-sm">自强 弘毅 求是 拓新</p>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-whu-gold transition duration-300">学校首页</a></li>
+                        <li><a href="#" class="hover:text-whu-gold transition duration-300">招生信息</a></li>
+                        <li><a href="#" class="hover:text-whu-gold transition duration-300">人才招聘</a></li>
+                        <li><a href="#" class="hover:text-whu-gold transition duration-300">联系我们</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">联系我们</h3>
+                    <ul class="space-y-2">
+                        <li><i class="fas fa-map-marker-alt mr-2"></i>湖北省武汉市珞珈山16号</li>
+                        <li><i class="fas fa-phone mr-2"></i>(+86) 027-6875XXXX</li>
+                        <li><i class="fas fa-envelope mr-2"></i>info@whu.edu.cn</li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">关注我们</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-blue-800 hover:bg-gray-200 transition duration-300">
+                            <i class="fab fa-weixin"></i>
+                        </a>
+                        <a href="#" class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-blue-800 hover:bg-gray-200 transition duration-300">
+                            <i class="fab fa-weibo"></i>
+                        </a>
+                        <a href="#" class="h-10 w-10 rounded-full bg-white flex items-center justify-center text-blue-800 hover:bg-gray-200 transition duration-300">
+                            <i class="fab fa-qq"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-blue-700 mt-8 pt-8 text-center text-sm">
+                <p>© 2023 武汉大学 版权所有 | 鄂ICP备XXXXXXXX号</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 登录模态框 -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">用户登录</h2>
+                    <button id="close-login" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <form id="login-form">
                     <div class="mb-4">
-                        <label for="loginEmail" class="block text-gray-700 text-sm font-bold mb-2">邮箱地址</label>
-                        <input type="email" id="loginEmail" required 
+                        <label for="login-email" class="block text-gray-700 text-sm font-bold mb-2">邮箱地址</label>
+                        <input type="email" id="login-email" required 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                placeholder="请输入邮箱">
                     </div>
                     
                     <div class="mb-6">
-                        <label for="loginPassword" class="block text-gray-700 text-sm font-bold mb-2">密码</label>
-                        <input type="password" id="loginPassword" required 
+                        <label for="login-password" class="block text-gray-700 text-sm font-bold mb-2">密码</label>
+                        <input type="password" id="login-password" required 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                placeholder="请输入密码">
                     </div>
@@ -99,77 +294,55 @@
                 </form>
                 
                 <div class="mt-4 text-center">
-                    <button id="showTestAccount" class="text-sm text-blue-600 hover:underline">显示测试账号</button>
-                    <p id="testAccountInfo" class="text-sm text-gray-600 hidden mt-2">测试账号: admin@whu.edu.cn / admin123</p>
-                </div>
-                
-                <div class="mt-6">
-                    <div class="relative">
-                        <div class="absolute inset-0 flex items-center">
-                            <div class="w-full border-t border-gray-300"></div>
-                        </div>
-                        <div class="relative flex justify-center text-sm">
-                            <span class="px-2 bg-white text-gray-500">其他登录方式</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4 grid grid-cols-2 gap-2">
-                        <button type="button" onclick="signInWithGitHub()"
-                                class="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
-                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"/>
-                            </svg>
-                            GitHub
-                        </button>
-                        
-                        <button type="button"
-                                class="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
-                            <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm0 18.75c-4.823 0-8.75-3.927-8.75-8.75S5.177 1.25 10 1.25 18.75 5.177 18.75 10 14.823 18.75 10 18.75z"/>
-                                <path d="M13.125 10c0 .863-.512 1.607-1.25 1.947v3.553h-1.25v-3.553a2.5 2.5 0 01-1.25-2.197c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5z"/>
-                            </svg>
-                            微信
-                        </button>
-                    </div>
+                    <p class="text-sm text-gray-600">没有账号？<a href="#" id="show-register" class="text-blue-600 hover:underline">立即注册</a></p>
                 </div>
             </div>
-            
-            <!-- 注册表单 -->
-            <div id="register" class="bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">用户注册</h2>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div id="register-modal" class="modal">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">用户注册</h2>
+                    <button id="close-register" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
                 
-                <form id="registerForm">
+                <form id="register-form">
                     <div class="mb-4">
-                        <label for="registerEmail" class="block text-gray-700 text-sm font-bold mb-2">邮箱地址</label>
-                        <input type="email" id="registerEmail" required 
+                        <label for="register-email" class="block text-gray-700 text-sm font-bold mb-2">邮箱地址</label>
+                        <input type="email" id="register-email" required 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                placeholder="请输入邮箱">
                     </div>
                     
                     <div class="mb-4">
-                        <label for="registerPassword" class="block text-gray-700 text-sm font-bold mb-2">密码</label>
-                        <input type="password" id="registerPassword" required 
+                        <label for="register-password" class="block text-gray-700 text-sm font-bold mb-2">密码</label>
+                        <input type="password" id="register-password" required 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                placeholder="请输入密码（至少6位）">
                     </div>
                     
                     <div class="mb-4">
-                        <label for="confirmPassword" class="block text-gray-700 text-sm font-bold mb-2">确认密码</label>
-                        <input type="password" id="confirmPassword" required 
+                        <label for="confirm-password" class="block text-gray-700 text-sm font-bold mb-2">确认密码</label>
+                        <input type="password" id="confirm-password" required 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                placeholder="请再次输入密码">
                     </div>
                     
                     <div class="mb-4">
-                        <label for="fullName" class="block text-gray-700 text-sm font-bold mb-2">姓名</label>
-                        <input type="text" id="fullName" required 
+                        <label for="full-name" class="block text-gray-700 text-sm font-bold mb-2">姓名</label>
+                        <input type="text" id="full-name" required 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                placeholder="请输入真实姓名">
                     </div>
                     
                     <div class="mb-6">
-                        <label for="studentId" class="block text-gray-700 text-sm font-bold mb-2">学号/工号</label>
-                        <input type="text" id="studentId" required 
+                        <label for="student-id" class="block text-gray-700 text-sm font-bold mb-2">学号/工号</label>
+                        <input type="text" id="student-id" required 
                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                placeholder="请输入学号或工号">
                     </div>
@@ -181,138 +354,107 @@
                 </form>
                 
                 <div class="mt-4 text-center">
-                    <p class="text-sm text-gray-600">已有账号？<a href="#login" class="text-blue-600 hover:underline">立即登录</a></p>
+                    <p class="text-sm text-gray-600">已有账号？<a href="#" id="show-login" class="text-blue-600 hover:underline">立即登录</a></p>
                 </div>
             </div>
         </div>
-        
-        <!-- 用户仪表板 -->
-        <div id="user-dashboard" class="user-dashboard bg-white rounded-lg shadow-md p-6 mt-8">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">用户仪表板</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-blue-50 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold mb-2">个人信息</h3>
-                    <p id="user-info" class="text-gray-700">加载中...</p>
-                </div>
-                <div class="bg-green-50 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold mb-2">校园服务</h3>
-                    <ul class="text-gray-700">
-                        <li class="mb-1">• 选课系统</li>
-                        <li class="mb-1">• 成绩查询</li>
-                        <li class="mb-1">• 图书馆</li>
-                        <li>• 校园卡服务</li>
-                    </ul>
-                </div>
-                <div class="bg-yellow-50 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold mb-2">通知公告</h3>
-                    <p class="text-gray-700">暂无新通知</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 管理员后台 -->
-        <div id="admin-panel" class="admin-panel bg-white rounded-lg shadow-md p-6 mt-8">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">管理员后台</h2>
-            <div class="mb-6">
-                <h3 class="text-xl font-semibold mb-4">用户管理</h3>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full bg-white">
-                        <thead>
-                            <tr class="whu-blue text-white">
-                                <th class="py-2 px-4">ID</th>
-                                <th class="py-2 px-4">邮箱</th>
-                                <th class="py-2 px-4">姓名</th>
-                                <th class="py-2 px-4">学号/工号</th>
-                                <th class="py-2 px-4">角色</th>
-                                <th class="py-2 px-4">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody id="users-table">
-                            <tr>
-                                <td colspan="6" class="text-center py-4">加载用户数据中...</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-blue-50 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold mb-2">系统统计</h3>
-                    <ul class="text-gray-700">
-                        <li class="mb-1">• 注册用户: <span id="user-count">0</span></li>
-                        <li class="mb-1">• 管理员: <span id="admin-count">0</span></li>
-                        <li>• 今日登录: <span id="login-today">0</span></li>
-                    </ul>
-                </div>
-                <div class="bg-green-50 rounded-lg p-4">
-                    <h3 class="text-lg font-semibold mb-2">系统管理</h3>
-                    <div class="space-y-2">
-                        <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">备份数据库</button>
-                        <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">发送系统通知</button>
-                        <button class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">清除缓存</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 功能展示 -->
-        <section class="mt-12" id="features-section">
-            <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">平台功能</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white text-2xl">🔐</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">统一身份认证</h3>
-                    <p class="text-gray-600">安全可靠的统一身份认证系统，一账号通行所有校园服务</p>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white text-2xl">📊</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">个人信息管理</h3>
-                    <p class="text-gray-600">完善的个人信息管理系统，随时查看和更新个人资料</p>
-                </div>
-                
-                <div class="bg-white rounded-lg shadow-md p-6 text-center">
-                    <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white text-2xl">🌐</span>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">校园服务集成</h3>
-                    <p class="text-gray-600">一站式校园服务平台，集成选课、成绩、图书馆等各类服务</p>
-                </div>
-            </div>
-        </section>
     </div>
 
-    <!-- 页脚 -->
-    <footer class="whu-blue text-white py-8 mt-12">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <div class="flex items-center space-x-2">
-                        <div class="h-8 w-8 rounded-full bg-white flex items-center justify-center">
-                            <span class="text-blue-800 font-bold text-sm">武</span>
-                        </div>
-                        <span class="text-lg font-bold">武汉大学信息门户</span>
-                    </div>
-                    <p class="mt-2 text-sm">© 2023 武汉大学 版权所有</p>
+    <!-- 用户仪表板 -->
+    <div id="user-dashboard" class="user-dashboard fixed inset-0 bg-gray-50 z-40 overflow-y-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">用户仪表板</h2>
+                    <button id="close-dashboard" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
                 </div>
-                <div class="text-sm">
-                    <p>地址：湖北省武汉市珞珈山16号</p>
-                    <p class="mt-1">邮编：430072</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-2">个人信息</h3>
+                        <p id="user-info" class="text-gray-700">加载中...</p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-2">校园服务</h3>
+                        <ul class="text-gray-700">
+                            <li class="mb-1">• 选课系统</li>
+                            <li class="mb-1">• 成绩查询</li>
+                            <li class="mb-1">• 图书馆</li>
+                            <li>• 校园卡服务</li>
+                        </ul>
+                    </div>
+                    <div class="bg-yellow-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-2">通知公告</h3>
+                        <p class="text-gray-700">暂无新通知</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+
+    <!-- 管理员后台 -->
+    <div id="admin-panel" class="admin-panel fixed inset-0 bg-gray-50 z-40 overflow-y-auto">
+        <div class="container mx-auto px-4 py-8">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">管理员后台</h2>
+                    <button id="close-admin" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-xl font-semibold mb-4">用户管理</h3>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full bg-white">
+                            <thead>
+                                <tr class="whu-blue text-white">
+                                    <th class="py-2 px-4">ID</th>
+                                    <th class="py-2 px-4">邮箱</th>
+                                    <th class="py-2 px-4">姓名</th>
+                                    <th class="py-2 px-4">学号/工号</th>
+                                    <th class="py-2 px-4">角色</th>
+                                    <th class="py-2 px-4">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table">
+                                <tr>
+                                    <td colspan="6" class="text-center py-4">加载用户数据中...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-blue-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-2">系统统计</h3>
+                        <ul class="text-gray-700">
+                            <li class="mb-1">• 注册用户: <span id="user-count">0</span></li>
+                            <li class="mb-1">• 管理员: <span id="admin-count">0</span></li>
+                            <li>• 今日登录: <span id="login-today">0</span></li>
+                        </ul>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4">
+                        <h3 class="text-lg font-semibold mb-2">系统管理</h3>
+                        <div class="space-y-2">
+                            <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition duration-300">备份数据库</button>
+                            <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition duration-300">发送系统通知</button>
+                            <button class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700 transition duration-300">清除缓存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- 消息提示 -->
-    <div id="message" class="fixed top-4 right-4 p-4 rounded-lg shadow-lg hidden max-w-sm">
+    <div id="message" class="fixed top-4 right-4 p-4 rounded-lg shadow-lg hidden max-w-sm z-50">
         <div class="flex items-center">
-            <span id="messageIcon" class="mr-2"></span>
-            <span id="messageText"></span>
+            <span id="message-icon" class="mr-2"></span>
+            <span id="message-text"></span>
         </div>
     </div>
 
@@ -331,20 +473,20 @@
         // 显示消息提示
         function showMessage(message, type = 'info') {
             const messageEl = document.getElementById('message');
-            const messageText = document.getElementById('messageText');
-            const messageIcon = document.getElementById('messageIcon');
+            const messageText = document.getElementById('message-text');
+            const messageIcon = document.getElementById('message-icon');
             
             messageText.textContent = message;
             
             // 根据类型设置颜色和图标
             if (type === 'success') {
-                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-green-100 text-green-800 border border-green-300';
+                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-green-100 text-green-800 border border-green-300 z-50';
                 messageIcon.innerHTML = '✅';
             } else if (type === 'error') {
-                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-red-100 text-red-800 border border-red-300';
+                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-red-100 text-red-800 border border-red-300 z-50';
                 messageIcon.innerHTML = '❌';
             } else {
-                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-blue-100 text-blue-800 border border-blue-300';
+                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-blue-100 text-blue-800 border border-blue-300 z-50';
                 messageIcon.innerHTML = 'ℹ️';
             }
             
@@ -375,71 +517,25 @@
                     
                 if (!userError && userData) {
                     currentUserRole = userData.role || 'student';
-                    updateUIForUser(user.email, currentUserRole, userData.full_name);
+                    updateAuthButton(user.email, currentUserRole, userData.full_name);
                 } else {
                     // 如果没有在users表中找到记录，默认为学生
                     currentUserRole = 'student';
-                    updateUIForUser(user.email, 'student', '用户');
+                    updateAuthButton(user.email, 'student', '用户');
                 }
             }
             
             return user;
         }
 
-        // 根据用户状态更新UI
-        function updateUIForUser(email, role, name) {
-            // 更新导航栏
-            document.getElementById('nav-login').classList.add('hidden');
-            document.getElementById('nav-register').classList.add('hidden');
-            document.getElementById('nav-logout').classList.remove('hidden');
-            
+        // 更新认证按钮状态
+        function updateAuthButton(email, role, name) {
+            const authBtn = document.getElementById('auth-btn');
             if (role === 'admin') {
-                document.getElementById('nav-admin').classList.remove('hidden');
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('admin-panel').classList.remove('hidden');
-                document.getElementById('features-section').classList.add('hidden');
-                loadAdminData();
+                authBtn.innerHTML = `<i class="fas fa-user-shield mr-1"></i>${name} (管理员)`;
             } else {
-                document.getElementById('nav-dashboard').classList.remove('hidden');
-                document.getElementById('auth-section').classList.add('hidden');
-                document.getElementById('user-dashboard').classList.remove('hidden');
-                document.getElementById('user-info').textContent = `欢迎，${name} (${email})`;
+                authBtn.innerHTML = `<i class="fas fa-user mr-1"></i>${name}`;
             }
-        }
-
-        // 加载管理员数据
-        async function loadAdminData() {
-            // 模拟加载用户数据
-            setTimeout(() => {
-                document.getElementById('users-table').innerHTML = `
-                    <tr>
-                        <td class="py-2 px-4 border-b">1</td>
-                        <td class="py-2 px-4 border-b">admin@whu.edu.cn</td>
-                        <td class="py-2 px-4 border-b">系统管理员</td>
-                        <td class="py-2 px-4 border-b">A10001</td>
-                        <td class="py-2 px-4 border-b"><span class="bg-red-100 text-red-800 px-2 py-1 rounded">管理员</span></td>
-                        <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm">编辑</button>
-                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm">删除</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="py-2 px-4 border-b">2</td>
-                        <td class="py-2 px-4 border-b">student1@whu.edu.cn</td>
-                        <td class="py-2 px-4 border-b">张三</td>
-                        <td class="py-2 px-4 border-b">2021301001001</td>
-                        <td class="py-2 px-4 border-b"><span class="bg-green-100 text-green-800 px-2 py-1 rounded">学生</span></td>
-                        <td class="py-2 px-4 border-b">
-                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm">编辑</button>
-                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm">删除</button>
-                        </td>
-                    </tr>
-                `;
-                
-                document.getElementById('user-count').textContent = '15';
-                document.getElementById('admin-count').textContent = '2';
-                document.getElementById('login-today').textContent = '8';
-            }, 1000);
         }
 
         // 邮箱密码注册
@@ -501,21 +597,6 @@
             }
         }
 
-        // GitHub OAuth登录
-        async function signInWithGitHub() {
-            const { data, error } = await supabase.auth.signInWithOAuth({
-                provider: 'github',
-                options: {
-                    redirectTo: `${window.location.origin}/dashboard.html`
-                }
-            });
-            
-            if (error) {
-                console.error('GitHub登录出错:', error);
-                showMessage('GitHub登录失败: ' + error.message, 'error');
-            }
-        }
-
         // 退出登录
         async function signOut() {
             const { error } = await supabase.auth.signOut();
@@ -525,89 +606,45 @@
             } else {
                 currentUser = null;
                 currentUserRole = 'guest';
-                resetUI();
+                document.getElementById('auth-btn').innerHTML = '<i class="fas fa-user mr-1"></i>登录/注册';
                 showMessage('已成功退出登录', 'success');
             }
         }
 
-        // 重置UI到未登录状态
-        function resetUI() {
-            document.getElementById('nav-login').classList.remove('hidden');
-            document.getElementById('nav-register').classList.remove('hidden');
-            document.getElementById('nav-dashboard').classList.add('hidden');
-            document.getElementById('nav-admin').classList.add('hidden');
-            document.getElementById('nav-logout').classList.add('hidden');
-            
-            document.getElementById('auth-section').classList.remove('hidden');
-            document.getElementById('user-dashboard').classList.add('hidden');
-            document.getElementById('admin-panel').classList.add('hidden');
-            document.getElementById('features-section').classList.remove('hidden');
-            
-            // 清空表单
-            document.getElementById('loginForm').reset();
-            document.getElementById('registerForm').reset();
+        // 加载管理员数据
+        async function loadAdminData() {
+            // 模拟加载用户数据
+            setTimeout(() => {
+                document.getElementById('users-table').innerHTML = `
+                    <tr>
+                        <td class="py-2 px-4 border-b">1</td>
+                        <td class="py-2 px-4 border-b">admin@whu.edu.cn</td>
+                        <td class="py-2 px-4 border-b">系统管理员</td>
+                        <td class="py-2 px-4 border-b">A10001</td>
+                        <td class="py-2 px-4 border-b"><span class="bg-red-100 text-red-800 px-2 py-1 rounded text-sm">管理员</span></td>
+                        <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 transition duration-300">编辑</button>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600 transition duration-300 ml-1">删除</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border-b">2</td>
+                        <td class="py-2 px-4 border-b">student1@whu.edu.cn</td>
+                        <td class="py-2 px-4 border-b">张三</td>
+                        <td class="py-2 px-4 border-b">2021301001001</td>
+                        <td class="py-2 px-4 border-b"><span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm">学生</span></td>
+                        <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm hover:bg-blue-600 transition duration-300">编辑</button>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm hover:bg-red-600 transition duration-300 ml-1">删除</button>
+                        </td>
+                    </tr>
+                `;
+                
+                document.getElementById('user-count').textContent = '15';
+                document.getElementById('admin-count').textContent = '2';
+                document.getElementById('login-today').textContent = '8';
+            }, 1000);
         }
-
-        // 登录表单提交
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            // 测试账号验证
-            if (email === 'admin@whu.edu.cn' && password === 'admin123') {
-                showMessage('管理员登录成功！', 'success');
-                // 模拟管理员登录
-                currentUser = { email: 'admin@whu.edu.cn' };
-                currentUserRole = 'admin';
-                updateUIForUser('admin@whu.edu.cn', 'admin', '系统管理员');
-                return;
-            }
-            
-            const { data, error } = await signIn(email, password);
-            
-            if (error) {
-                showMessage('登录失败: ' + error.message, 'error');
-            } else {
-                showMessage('登录成功！', 'success');
-                // 页面会根据checkAuth的结果自动更新
-            }
-        });
-
-        // 注册表单提交
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('registerEmail').value;
-            const password = document.getElementById('registerPassword').value;
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            const fullName = document.getElementById('fullName').value;
-            const studentId = document.getElementById('studentId').value;
-            
-            // 验证密码
-            if (password.length < 6) {
-                showMessage('密码长度至少6位', 'error');
-                return;
-            }
-            
-            if (password !== confirmPassword) {
-                showMessage('两次输入的密码不一致', 'error');
-                return;
-            }
-            
-            const { data, error } = await signUp(email, password, {
-                full_name: fullName,
-                student_id: studentId
-            });
-            
-            if (error) {
-                showMessage('注册失败: ' + error.message, 'error');
-            } else {
-                // 注册成功后的处理已在signUp函数中完成
-                document.getElementById('registerForm').reset();
-            }
-        });
 
         // 页面加载时检查认证状态
         document.addEventListener('DOMContentLoaded', () => {
@@ -620,6 +657,8 @@
             // 平滑滚动到锚点
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
+                    if (this.getAttribute('href') === '#') return;
+                    
                     e.preventDefault();
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
@@ -631,38 +670,143 @@
                 });
             });
             
-            // 显示测试账号
-            document.getElementById('showTestAccount').addEventListener('click', function() {
-                const testInfo = document.getElementById('testAccountInfo');
-                testInfo.classList.toggle('hidden');
-                this.textContent = testInfo.classList.contains('hidden') ? '显示测试账号' : '隐藏测试账号';
+            // 登录/注册按钮点击事件
+            document.getElementById('auth-btn').addEventListener('click', function() {
+                if (currentUser) {
+                    // 如果已登录，显示用户菜单
+                    if (currentUserRole === 'admin') {
+                        document.getElementById('admin-panel').style.display = 'block';
+                        loadAdminData();
+                    } else {
+                        document.getElementById('user-dashboard').style.display = 'block';
+                        document.getElementById('user-info').textContent = `欢迎，${currentUser.email}`;
+                    }
+                } else {
+                    // 如果未登录，显示登录模态框
+                    document.getElementById('login-modal').style.display = 'flex';
+                }
             });
             
-            // 导航链接事件
-            document.getElementById('nav-home').addEventListener('click', function(e) {
+            // 关闭模态框事件
+            document.getElementById('close-login').addEventListener('click', function() {
+                document.getElementById('login-modal').style.display = 'none';
+            });
+            
+            document.getElementById('close-register').addEventListener('click', function() {
+                document.getElementById('register-modal').style.display = 'none';
+            });
+            
+            document.getElementById('close-dashboard').addEventListener('click', function() {
+                document.getElementById('user-dashboard').style.display = 'none';
+            });
+            
+            document.getElementById('close-admin').addEventListener('click', function() {
+                document.getElementById('admin-panel').style.display = 'none';
+            });
+            
+            // 切换登录/注册模态框
+            document.getElementById('show-register').addEventListener('click', function(e) {
                 e.preventDefault();
-                document.getElementById('home-section').scrollIntoView({
-                    behavior: 'smooth'
+                document.getElementById('login-modal').style.display = 'none';
+                document.getElementById('register-modal').style.display = 'flex';
+            });
+            
+            document.getElementById('show-login').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('register-modal').style.display = 'none';
+                document.getElementById('login-modal').style.display = 'flex';
+            });
+            
+            // 登录表单提交
+            document.getElementById('login-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                // 测试账号验证
+                if (email === 'admin@whu.edu.cn' && password === 'admin123') {
+                    showMessage('管理员登录成功！', 'success');
+                    // 模拟管理员登录
+                    currentUser = { email: 'admin@whu.edu.cn' };
+                    currentUserRole = 'admin';
+                    updateAuthButton('admin@whu.edu.cn', 'admin', '系统管理员');
+                    document.getElementById('login-modal').style.display = 'none';
+                    document.getElementById('admin-panel').style.display = 'block';
+                    loadAdminData();
+                    return;
+                }
+                
+                const { data, error } = await signIn(email, password);
+                
+                if (error) {
+                    showMessage('登录失败: ' + error.message, 'error');
+                } else {
+                    showMessage('登录成功！', 'success');
+                    document.getElementById('login-modal').style.display = 'none';
+                    
+                    // 更新用户状态
+                    currentUser = data.user;
+                    const { data: userData, error: userError } = await supabase
+                        .from('users')
+                        .select('role, full_name')
+                        .eq('id', data.user.id)
+                        .single();
+                        
+                    if (!userError && userData) {
+                        currentUserRole = userData.role || 'student';
+                        updateAuthButton(data.user.email, currentUserRole, userData.full_name);
+                        
+                        if (currentUserRole === 'admin') {
+                            document.getElementById('admin-panel').style.display = 'block';
+                            loadAdminData();
+                        } else {
+                            document.getElementById('user-dashboard').style.display = 'block';
+                            document.getElementById('user-info').textContent = `欢迎，${userData.full_name} (${data.user.email})`;
+                        }
+                    }
+                }
+            });
+            
+            // 注册表单提交
+            document.getElementById('register-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                const fullName = document.getElementById('full-name').value;
+                const studentId = document.getElementById('student-id').value;
+                
+                // 验证密码
+                if (password.length < 6) {
+                    showMessage('密码长度至少6位', 'error');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    showMessage('两次输入的密码不一致', 'error');
+                    return;
+                }
+                
+                const { data, error } = await signUp(email, password, {
+                    full_name: fullName,
+                    student_id: studentId
                 });
+                
+                if (error) {
+                    showMessage('注册失败: ' + error.message, 'error');
+                } else {
+                    document.getElementById('register-form').reset();
+                    document.getElementById('register-modal').style.display = 'none';
+                }
             });
             
-            document.getElementById('nav-logout').addEventListener('click', function(e) {
-                e.preventDefault();
-                signOut();
-            });
-            
-            document.getElementById('nav-dashboard').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('user-dashboard').scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-            
-            document.getElementById('nav-admin').addEventListener('click', function(e) {
-                e.preventDefault();
-                document.getElementById('admin-panel').scrollIntoView({
-                    behavior: 'smooth'
-                });
+            // 点击模态框外部关闭
+            window.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.style.display = 'none';
+                }
             });
         });
     </script>
