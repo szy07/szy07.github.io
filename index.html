@@ -15,6 +15,12 @@
                         url('https://www.whu.edu.cn/__local/B/0B/98/E6C7F0A8F6A6D6D4F6A2F3F3F3F3F3F3F3F3F3F3.jpg') no-repeat center center;
             background-size: cover;
         }
+        .admin-panel {
+            display: none;
+        }
+        .user-dashboard {
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -28,9 +34,12 @@
                 <span class="text-xl font-bold">武汉大学信息门户</span>
             </div>
             <div class="space-x-4">
-                <a href="#" class="hover:text-whu-gold">首页</a>
-                <a href="#login" class="hover:text-whu-gold">登录</a>
-                <a href="#register" class="hover:text-whu-gold">注册</a>
+                <a href="#" class="hover:text-whu-gold" id="nav-home">首页</a>
+                <a href="#login" class="hover:text-whu-gold" id="nav-login">登录</a>
+                <a href="#register" class="hover:text-whu-gold" id="nav-register">注册</a>
+                <a href="#" class="hover:text-whu-gold hidden" id="nav-dashboard">仪表板</a>
+                <a href="#" class="hover:text-whu-gold hidden" id="nav-admin">管理后台</a>
+                <a href="#" class="hover:text-whu-gold hidden" id="nav-logout">退出</a>
             </div>
         </div>
     </nav>
@@ -38,7 +47,7 @@
     <!-- 主内容区 -->
     <div class="container mx-auto px-4 py-8">
         <!-- 武大简介 -->
-        <section class="mb-12">
+        <section class="mb-12" id="home-section">
             <div class="bg-white rounded-lg shadow-md p-6">
                 <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">欢迎来到武汉大学信息门户</h1>
                 <div class="flex flex-col md:flex-row items-center">
@@ -63,7 +72,7 @@
         </section>
 
         <!-- 登录注册区域 -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8" id="auth-section">
             <!-- 登录表单 -->
             <div id="login" class="bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">用户登录</h2>
@@ -90,7 +99,8 @@
                 </form>
                 
                 <div class="mt-4 text-center">
-                    <p class="text-sm text-gray-600">测试账号: admin@whu.edu.cn / admin123</p>
+                    <button id="showTestAccount" class="text-sm text-blue-600 hover:underline">显示测试账号</button>
+                    <p id="testAccountInfo" class="text-sm text-gray-600 hidden mt-2">测试账号: admin@whu.edu.cn / admin123</p>
                 </div>
                 
                 <div class="mt-6">
@@ -176,8 +186,78 @@
             </div>
         </div>
         
+        <!-- 用户仪表板 -->
+        <div id="user-dashboard" class="user-dashboard bg-white rounded-lg shadow-md p-6 mt-8">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">用户仪表板</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-2">个人信息</h3>
+                    <p id="user-info" class="text-gray-700">加载中...</p>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-2">校园服务</h3>
+                    <ul class="text-gray-700">
+                        <li class="mb-1">• 选课系统</li>
+                        <li class="mb-1">• 成绩查询</li>
+                        <li class="mb-1">• 图书馆</li>
+                        <li>• 校园卡服务</li>
+                    </ul>
+                </div>
+                <div class="bg-yellow-50 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-2">通知公告</h3>
+                    <p class="text-gray-700">暂无新通知</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 管理员后台 -->
+        <div id="admin-panel" class="admin-panel bg-white rounded-lg shadow-md p-6 mt-8">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">管理员后台</h2>
+            <div class="mb-6">
+                <h3 class="text-xl font-semibold mb-4">用户管理</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full bg-white">
+                        <thead>
+                            <tr class="whu-blue text-white">
+                                <th class="py-2 px-4">ID</th>
+                                <th class="py-2 px-4">邮箱</th>
+                                <th class="py-2 px-4">姓名</th>
+                                <th class="py-2 px-4">学号/工号</th>
+                                <th class="py-2 px-4">角色</th>
+                                <th class="py-2 px-4">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-table">
+                            <tr>
+                                <td colspan="6" class="text-center py-4">加载用户数据中...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-2">系统统计</h3>
+                    <ul class="text-gray-700">
+                        <li class="mb-1">• 注册用户: <span id="user-count">0</span></li>
+                        <li class="mb-1">• 管理员: <span id="admin-count">0</span></li>
+                        <li>• 今日登录: <span id="login-today">0</span></li>
+                    </ul>
+                </div>
+                <div class="bg-green-50 rounded-lg p-4">
+                    <h3 class="text-lg font-semibold mb-2">系统管理</h3>
+                    <div class="space-y-2">
+                        <button class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">备份数据库</button>
+                        <button class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">发送系统通知</button>
+                        <button class="w-full bg-red-600 text-white py-2 rounded hover:bg-red-700">清除缓存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- 功能展示 -->
-        <section class="mt-12">
+        <section class="mt-12" id="features-section">
             <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">平台功能</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white rounded-lg shadow-md p-6 text-center">
@@ -244,6 +324,10 @@
         // 初始化Supabase客户端
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // 当前用户状态
+        let currentUser = null;
+        let currentUserRole = 'guest';
+
         // 显示消息提示
         function showMessage(message, type = 'info') {
             const messageEl = document.getElementById('message');
@@ -279,7 +363,83 @@
                 console.error('检查认证状态出错:', error);
                 return null;
             }
+            
+            if (user) {
+                currentUser = user;
+                // 获取用户角色
+                const { data: userData, error: userError } = await supabase
+                    .from('users')
+                    .select('role, full_name, student_id')
+                    .eq('id', user.id)
+                    .single();
+                    
+                if (!userError && userData) {
+                    currentUserRole = userData.role || 'student';
+                    updateUIForUser(user.email, currentUserRole, userData.full_name);
+                } else {
+                    // 如果没有在users表中找到记录，默认为学生
+                    currentUserRole = 'student';
+                    updateUIForUser(user.email, 'student', '用户');
+                }
+            }
+            
             return user;
+        }
+
+        // 根据用户状态更新UI
+        function updateUIForUser(email, role, name) {
+            // 更新导航栏
+            document.getElementById('nav-login').classList.add('hidden');
+            document.getElementById('nav-register').classList.add('hidden');
+            document.getElementById('nav-logout').classList.remove('hidden');
+            
+            if (role === 'admin') {
+                document.getElementById('nav-admin').classList.remove('hidden');
+                document.getElementById('auth-section').classList.add('hidden');
+                document.getElementById('admin-panel').classList.remove('hidden');
+                document.getElementById('features-section').classList.add('hidden');
+                loadAdminData();
+            } else {
+                document.getElementById('nav-dashboard').classList.remove('hidden');
+                document.getElementById('auth-section').classList.add('hidden');
+                document.getElementById('user-dashboard').classList.remove('hidden');
+                document.getElementById('user-info').textContent = `欢迎，${name} (${email})`;
+            }
+        }
+
+        // 加载管理员数据
+        async function loadAdminData() {
+            // 模拟加载用户数据
+            setTimeout(() => {
+                document.getElementById('users-table').innerHTML = `
+                    <tr>
+                        <td class="py-2 px-4 border-b">1</td>
+                        <td class="py-2 px-4 border-b">admin@whu.edu.cn</td>
+                        <td class="py-2 px-4 border-b">系统管理员</td>
+                        <td class="py-2 px-4 border-b">A10001</td>
+                        <td class="py-2 px-4 border-b"><span class="bg-red-100 text-red-800 px-2 py-1 rounded">管理员</span></td>
+                        <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm">编辑</button>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm">删除</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 px-4 border-b">2</td>
+                        <td class="py-2 px-4 border-b">student1@whu.edu.cn</td>
+                        <td class="py-2 px-4 border-b">张三</td>
+                        <td class="py-2 px-4 border-b">2021301001001</td>
+                        <td class="py-2 px-4 border-b"><span class="bg-green-100 text-green-800 px-2 py-1 rounded">学生</span></td>
+                        <td class="py-2 px-4 border-b">
+                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-sm">编辑</button>
+                            <button class="bg-red-500 text-white px-2 py-1 rounded text-sm">删除</button>
+                        </td>
+                    </tr>
+                `;
+                
+                document.getElementById('user-count').textContent = '15';
+                document.getElementById('admin-count').textContent = '2';
+                document.getElementById('login-today').textContent = '8';
+            }, 1000);
         }
 
         // 邮箱密码注册
@@ -356,6 +516,38 @@
             }
         }
 
+        // 退出登录
+        async function signOut() {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                console.error('退出登录出错:', error);
+                showMessage('退出登录失败: ' + error.message, 'error');
+            } else {
+                currentUser = null;
+                currentUserRole = 'guest';
+                resetUI();
+                showMessage('已成功退出登录', 'success');
+            }
+        }
+
+        // 重置UI到未登录状态
+        function resetUI() {
+            document.getElementById('nav-login').classList.remove('hidden');
+            document.getElementById('nav-register').classList.remove('hidden');
+            document.getElementById('nav-dashboard').classList.add('hidden');
+            document.getElementById('nav-admin').classList.add('hidden');
+            document.getElementById('nav-logout').classList.add('hidden');
+            
+            document.getElementById('auth-section').classList.remove('hidden');
+            document.getElementById('user-dashboard').classList.add('hidden');
+            document.getElementById('admin-panel').classList.add('hidden');
+            document.getElementById('features-section').classList.remove('hidden');
+            
+            // 清空表单
+            document.getElementById('loginForm').reset();
+            document.getElementById('registerForm').reset();
+        }
+
         // 登录表单提交
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -365,10 +557,11 @@
             
             // 测试账号验证
             if (email === 'admin@whu.edu.cn' && password === 'admin123') {
-                showMessage('登录成功！正在跳转...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'admin.html';
-                }, 1500);
+                showMessage('管理员登录成功！', 'success');
+                // 模拟管理员登录
+                currentUser = { email: 'admin@whu.edu.cn' };
+                currentUserRole = 'admin';
+                updateUIForUser('admin@whu.edu.cn', 'admin', '系统管理员');
                 return;
             }
             
@@ -377,24 +570,8 @@
             if (error) {
                 showMessage('登录失败: ' + error.message, 'error');
             } else {
-                showMessage('登录成功！正在跳转...', 'success');
-                
-                // 根据用户角色跳转不同页面
-                const { data: userData, error: userError } = await supabase
-                    .from('users')
-                    .select('role')
-                    .eq('id', data.user.id)
-                    .single();
-                    
-                setTimeout(() => {
-                    if (userError || !userData) {
-                        window.location.href = 'dashboard.html';
-                    } else if (userData.role === 'admin') {
-                        window.location.href = 'admin.html';
-                    } else {
-                        window.location.href = 'dashboard.html';
-                    }
-                }, 1500);
+                showMessage('登录成功！', 'success');
+                // 页面会根据checkAuth的结果自动更新
             }
         });
 
@@ -436,7 +613,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             checkAuth().then(user => {
                 if (user) {
-                    // 如果用户已登录，显示用户信息
                     console.log('用户已登录:', user.email);
                 }
             });
@@ -452,6 +628,40 @@
                             block: 'start'
                         });
                     }
+                });
+            });
+            
+            // 显示测试账号
+            document.getElementById('showTestAccount').addEventListener('click', function() {
+                const testInfo = document.getElementById('testAccountInfo');
+                testInfo.classList.toggle('hidden');
+                this.textContent = testInfo.classList.contains('hidden') ? '显示测试账号' : '隐藏测试账号';
+            });
+            
+            // 导航链接事件
+            document.getElementById('nav-home').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('home-section').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+            
+            document.getElementById('nav-logout').addEventListener('click', function(e) {
+                e.preventDefault();
+                signOut();
+            });
+            
+            document.getElementById('nav-dashboard').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('user-dashboard').scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+            
+            document.getElementById('nav-admin').addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('admin-panel').scrollIntoView({
+                    behavior: 'smooth'
                 });
             });
         });
