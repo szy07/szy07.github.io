@@ -3,13 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>武汉大学信息门户</title>
+    <title>武汉大学信息门户 - 登录注册</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         .whu-blue { background-color: #1e3a8a; }
         .whu-light-blue { background-color: #3b82f6; }
         .whu-gold { color: #d4af37; }
+        .bg-whu-pattern { 
+            background: linear-gradient(rgba(30, 58, 138, 0.8), rgba(30, 58, 138, 0.9)), 
+                        url('https://www.whu.edu.cn/__local/B/0B/98/E6C7F0A8F6A6D6D4F6A2F3F3F3F3F3F3F3F3F3F3.jpg') no-repeat center center;
+            background-size: cover;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -17,59 +22,439 @@
     <nav class="whu-blue text-white shadow-lg">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <img src="https://www.whu.edu.cn/images/logo.png" alt="武大校徽" class="h-10 w-10">
-                <span class="text-xl font-bold">武汉大学</span>
+                <div class="h-10 w-10 rounded-full bg-white flex items-center justify-center">
+                    <span class="text-blue-800 font-bold">武</span>
+                </div>
+                <span class="text-xl font-bold">武汉大学信息门户</span>
             </div>
             <div class="space-x-4">
-                <a href="index.html" class="hover:text-whu-gold">首页</a>
-                <a href="login.html" class="hover:text-whu-gold">登录</a>
-                <a href="register.html" class="hover:text-whu-gold">注册</a>
+                <a href="#" class="hover:text-whu-gold">首页</a>
+                <a href="#login" class="hover:text-whu-gold">登录</a>
+                <a href="#register" class="hover:text-whu-gold">注册</a>
             </div>
         </div>
     </nav>
 
     <!-- 主内容区 -->
-    <header class="whu-light-blue text-white py-20">
-        <div class="container mx-auto text-center">
-            <h1 class="text-4xl font-bold mb-4">欢迎来到武汉大学信息门户</h1>
-            <p class="text-xl mb-8">统一身份认证平台</p>
-            <a href="login.html" class="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition duration-300">
-                立即登录
-            </a>
-        </div>
-    </header>
+    <div class="container mx-auto px-4 py-8">
+        <!-- 武大简介 -->
+        <section class="mb-12">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">欢迎来到武汉大学信息门户</h1>
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-6 md:mb-0">
+                        <p class="text-gray-700 mb-4">
+                            武汉大学是国家教育部直属重点综合性大学，是国家"985工程"和"211工程"重点建设高校，是首批"双一流"建设高校。
+                        </p>
+                        <p class="text-gray-700 mb-4">
+                            学校溯源于1893年清末湖广总督张之洞奏请清政府创办的自强学堂，历经传承演变，1928年定名为国立武汉大学，是近代中国第一批国立大学。
+                        </p>
+                        <p class="text-gray-700">
+                            武汉大学环绕东湖水，坐拥珞珈山，校园环境优美，风景如画，被誉为"中国最美丽的大学"。
+                        </p>
+                    </div>
+                    <div class="md:w-1/2 flex justify-center">
+                        <div class="bg-gray-200 h-64 w-64 rounded-lg flex items-center justify-center">
+                            <span class="text-gray-500">武汉大学校园风景图</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <!-- 功能特色 -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">平台特色</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center p-6">
+        <!-- 登录注册区域 -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- 登录表单 -->
+            <div id="login" class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">用户登录</h2>
+                
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label for="loginEmail" class="block text-gray-700 text-sm font-bold mb-2">邮箱地址</label>
+                        <input type="email" id="loginEmail" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="请输入邮箱">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="loginPassword" class="block text-gray-700 text-sm font-bold mb-2">密码</label>
+                        <input type="password" id="loginPassword" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="请输入密码">
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full whu-blue text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+                        登录
+                    </button>
+                </form>
+                
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-gray-600">测试账号: admin@whu.edu.cn / admin123</p>
+                </div>
+                
+                <div class="mt-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-300"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-500">其他登录方式</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 grid grid-cols-2 gap-2">
+                        <button type="button" onclick="signInWithGitHub()"
+                                class="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
+                            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.484 0 10.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0110 4.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.203 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.942.359.31.678.921.678 1.856 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0020 10.017C20 4.484 15.522 0 10 0z" clip-rule="evenodd"/>
+                            </svg>
+                            GitHub
+                        </button>
+                        
+                        <button type="button"
+                                class="flex justify-center items-center px-4 py-2 border border-gray-300 rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition duration-300">
+                            <svg class="w-5 h-5 mr-2 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zm0 18.75c-4.823 0-8.75-3.927-8.75-8.75S5.177 1.25 10 1.25 18.75 5.177 18.75 10 14.823 18.75 10 18.75z"/>
+                                <path d="M13.125 10c0 .863-.512 1.607-1.25 1.947v3.553h-1.25v-3.553a2.5 2.5 0 01-1.25-2.197c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5z"/>
+                            </svg>
+                            微信
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 注册表单 -->
+            <div id="register" class="bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">用户注册</h2>
+                
+                <form id="registerForm">
+                    <div class="mb-4">
+                        <label for="registerEmail" class="block text-gray-700 text-sm font-bold mb-2">邮箱地址</label>
+                        <input type="email" id="registerEmail" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="请输入邮箱">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="registerPassword" class="block text-gray-700 text-sm font-bold mb-2">密码</label>
+                        <input type="password" id="registerPassword" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="请输入密码（至少6位）">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="confirmPassword" class="block text-gray-700 text-sm font-bold mb-2">确认密码</label>
+                        <input type="password" id="confirmPassword" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="请再次输入密码">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="fullName" class="block text-gray-700 text-sm font-bold mb-2">姓名</label>
+                        <input type="text" id="fullName" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="请输入真实姓名">
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="studentId" class="block text-gray-700 text-sm font-bold mb-2">学号/工号</label>
+                        <input type="text" id="studentId" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                               placeholder="请输入学号或工号">
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full whu-blue text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
+                        注册
+                    </button>
+                </form>
+                
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-gray-600">已有账号？<a href="#login" class="text-blue-600 hover:underline">立即登录</a></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 功能展示 -->
+        <section class="mt-12">
+            <h2 class="text-2xl font-bold text-center text-gray-800 mb-8">平台功能</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
                     <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-white text-2xl">🔐</span>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">统一身份认证</h3>
-                    <p class="text-gray-600">安全可靠的统一身份认证系统</p>
+                    <p class="text-gray-600">安全可靠的统一身份认证系统，一账号通行所有校园服务</p>
                 </div>
-                <div class="text-center p-6">
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
                     <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-white text-2xl">📊</span>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">个人信息管理</h3>
-                    <p class="text-gray-600">完善的个人信息管理系统</p>
+                    <p class="text-gray-600">完善的个人信息管理系统，随时查看和更新个人资料</p>
                 </div>
-                <div class="text-center p-6">
+                
+                <div class="bg-white rounded-lg shadow-md p-6 text-center">
                     <div class="whu-blue w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                         <span class="text-white text-2xl">🌐</span>
                     </div>
                     <h3 class="text-xl font-semibold mb-2">校园服务集成</h3>
-                    <p class="text-gray-600">一站式校园服务平台</p>
+                    <p class="text-gray-600">一站式校园服务平台，集成选课、成绩、图书馆等各类服务</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="whu-blue text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <div class="h-8 w-8 rounded-full bg-white flex items-center justify-center">
+                            <span class="text-blue-800 font-bold text-sm">武</span>
+                        </div>
+                        <span class="text-lg font-bold">武汉大学信息门户</span>
+                    </div>
+                    <p class="mt-2 text-sm">© 2023 武汉大学 版权所有</p>
+                </div>
+                <div class="text-sm">
+                    <p>地址：湖北省武汉市珞珈山16号</p>
+                    <p class="mt-1">邮编：430072</p>
                 </div>
             </div>
         </div>
-    </section>
+    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase-client.js"></script>
+    <!-- 消息提示 -->
+    <div id="message" class="fixed top-4 right-4 p-4 rounded-lg shadow-lg hidden max-w-sm">
+        <div class="flex items-center">
+            <span id="messageIcon" class="mr-2"></span>
+            <span id="messageText"></span>
+        </div>
+    </div>
+
+    <script>
+        // Supabase配置
+        const SUPABASE_URL = 'https://vkethnxciczquacvhisi.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZrZXRobnhjaWN6cXVhY3ZoaXNpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMxMzA3MTEsImV4cCI6MjA3ODcwNjcxMX0.n8gXVzcrypHjrBi6Q_fd99jv5YkLtF_PIKXO8elA__k';
+
+        // 初始化Supabase客户端
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 显示消息提示
+        function showMessage(message, type = 'info') {
+            const messageEl = document.getElementById('message');
+            const messageText = document.getElementById('messageText');
+            const messageIcon = document.getElementById('messageIcon');
+            
+            messageText.textContent = message;
+            
+            // 根据类型设置颜色和图标
+            if (type === 'success') {
+                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-green-100 text-green-800 border border-green-300';
+                messageIcon.innerHTML = '✅';
+            } else if (type === 'error') {
+                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-red-100 text-red-800 border border-red-300';
+                messageIcon.innerHTML = '❌';
+            } else {
+                messageEl.className = 'fixed top-4 right-4 p-4 rounded-lg shadow-lg max-w-sm bg-blue-100 text-blue-800 border border-blue-300';
+                messageIcon.innerHTML = 'ℹ️';
+            }
+            
+            messageEl.classList.remove('hidden');
+            
+            // 3秒后自动隐藏
+            setTimeout(() => {
+                messageEl.classList.add('hidden');
+            }, 3000);
+        }
+
+        // 检查用户认证状态
+        async function checkAuth() {
+            const { data: { user }, error } = await supabase.auth.getUser();
+            if (error) {
+                console.error('检查认证状态出错:', error);
+                return null;
+            }
+            return user;
+        }
+
+        // 邮箱密码注册
+        async function signUp(email, password, userData) {
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: password,
+                    options: {
+                        data: userData
+                    }
+                });
+
+                if (error) throw error;
+                
+                if (data.user) {
+                    // 将用户信息保存到数据库
+                    const { error: dbError } = await supabase
+                        .from('users')
+                        .insert([
+                            { 
+                                id: data.user.id, 
+                                email: data.user.email,
+                                full_name: userData.full_name,
+                                student_id: userData.student_id,
+                                role: email === 'admin@whu.edu.cn' ? 'admin' : 'student',
+                                created_at: new Date()
+                            }
+                        ]);
+
+                    if (dbError) {
+                        console.error('保存用户信息出错:', dbError);
+                        showMessage('注册成功，但保存用户信息时出错', 'error');
+                    } else {
+                        showMessage('注册成功！请检查邮箱验证邮件。', 'success');
+                    }
+                }
+                
+                return { data, error: null };
+            } catch (error) {
+                console.error('注册出错:', error);
+                return { data: null, error };
+            }
+        }
+
+        // 邮箱密码登录
+        async function signIn(email, password) {
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+                if (error) throw error;
+                return { data, error: null };
+            } catch (error) {
+                console.error('登录出错:', error);
+                return { data: null, error };
+            }
+        }
+
+        // GitHub OAuth登录
+        async function signInWithGitHub() {
+            const { data, error } = await supabase.auth.signInWithOAuth({
+                provider: 'github',
+                options: {
+                    redirectTo: `${window.location.origin}/dashboard.html`
+                }
+            });
+            
+            if (error) {
+                console.error('GitHub登录出错:', error);
+                showMessage('GitHub登录失败: ' + error.message, 'error');
+            }
+        }
+
+        // 登录表单提交
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            // 测试账号验证
+            if (email === 'admin@whu.edu.cn' && password === 'admin123') {
+                showMessage('登录成功！正在跳转...', 'success');
+                setTimeout(() => {
+                    window.location.href = 'admin.html';
+                }, 1500);
+                return;
+            }
+            
+            const { data, error } = await signIn(email, password);
+            
+            if (error) {
+                showMessage('登录失败: ' + error.message, 'error');
+            } else {
+                showMessage('登录成功！正在跳转...', 'success');
+                
+                // 根据用户角色跳转不同页面
+                const { data: userData, error: userError } = await supabase
+                    .from('users')
+                    .select('role')
+                    .eq('id', data.user.id)
+                    .single();
+                    
+                setTimeout(() => {
+                    if (userError || !userData) {
+                        window.location.href = 'dashboard.html';
+                    } else if (userData.role === 'admin') {
+                        window.location.href = 'admin.html';
+                    } else {
+                        window.location.href = 'dashboard.html';
+                    }
+                }, 1500);
+            }
+        });
+
+        // 注册表单提交
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const fullName = document.getElementById('fullName').value;
+            const studentId = document.getElementById('studentId').value;
+            
+            // 验证密码
+            if (password.length < 6) {
+                showMessage('密码长度至少6位', 'error');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('两次输入的密码不一致', 'error');
+                return;
+            }
+            
+            const { data, error } = await signUp(email, password, {
+                full_name: fullName,
+                student_id: studentId
+            });
+            
+            if (error) {
+                showMessage('注册失败: ' + error.message, 'error');
+            } else {
+                // 注册成功后的处理已在signUp函数中完成
+                document.getElementById('registerForm').reset();
+            }
+        });
+
+        // 页面加载时检查认证状态
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth().then(user => {
+                if (user) {
+                    // 如果用户已登录，显示用户信息
+                    console.log('用户已登录:', user.email);
+                }
+            });
+            
+            // 平滑滚动到锚点
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>
