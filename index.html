@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>枣阳市第一中学官网</title>
+  <meta name="description" content="学校官网与多身份权限管理后台，支持 GitHub Pages + Supabase 部署。" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="logo" href="#home" aria-label="学校首页">
+        <span class="logo-mark">明</span>
+        <span>
+          <strong id="schoolNameLogo">明德职业技术学院</strong>
+          <small>Official Website</small>
+        </span>
+      </a>
+
+      <nav class="site-nav">
+        <a href="#home">首页</a>
+        <a href="#about">学校概况</a>
+        <a href="#departments">院系专业</a>
+        <a href="#news">新闻动态</a>
+        <a href="#admission">招生就业</a>
+        <a href="#notice">通知公告</a>
+      </nav>
+
+      <button id="openLoginBtn" class="btn btn-primary">统一身份登录</button>
+    </div>
+  </header>
+
+  <main id="publicSite">
+    <section id="home" class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <span class="eyebrow">厚德 · 博学 · 求实 · 创新</span>
+          <h1 id="schoolNameHero">明德职业技术学院</h1>
+          <p id="schoolSlogan">建设高水平应用型学校，培养面向未来的高素质技术技能人才。</p>
+          <div class="hero-actions">
+            <a href="#admission" class="btn btn-primary">了解招生</a>
+            <a href="#news" class="btn btn-ghost">查看新闻</a>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-head">
+            <span>校园数据</span>
+            <strong>Campus</strong>
+          </div>
+          <div class="metric-list">
+            <div><strong>36+</strong><span>专业方向</span></div>
+            <div><strong>12000+</strong><span>在校学生</span></div>
+            <div><strong>680+</strong><span>教职员工</span></div>
+            <div><strong>96%</strong><span>就业去向落实率</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container split">
+        <div>
+          <span class="section-label">ABOUT</span>
+          <h2>学校概况</h2>
+          <p class="lead">
+            学校坚持立德树人根本任务，聚焦区域产业发展需求，形成了工科为主、多学科协调发展的办学格局。
+          </p>
+        </div>
+        <div class="feature-grid">
+          <article>
+            <h3>应用型培养</h3>
+            <p>强化项目实践、产教融合和真实任务训练，提升学生解决实际问题的能力。</p>
+          </article>
+          <article>
+            <h3>智慧校园</h3>
+            <p>推进数字化教学、校园服务和管理平台建设，让校园管理更高效。</p>
+          </article>
+          <article>
+            <h3>开放合作</h3>
+            <p>与行业企业共建课程、实训基地与就业通道，服务学生成长成才。</p>
+          </article>
+          <article>
+            <h3>文化育人</h3>
+            <p>以校园文化、志愿服务、创新创业活动促进学生全面发展。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="departments" class="section soft">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="section-label">DEPARTMENTS</span>
+            <h2>院系专业</h2>
+          </div>
+          <p>以下内容可由管理员在后台维护。</p>
+        </div>
+        <div id="departmentList" class="card-grid"></div>
+      </div>
+    </section>
+
+    <section id="news" class="section">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="section-label">NEWS</span>
+            <h2>新闻动态</h2>
+          </div>
+          <p>展示学校要闻、教学科研、校园活动等公开内容。</p>
+        </div>
+        <div id="newsList" class="news-grid"></div>
+      </div>
+    </section>
+
+    <section id="admission" class="section admission">
+      <div class="container admission-box">
+        <div>
+          <span class="section-label">ADMISSION</span>
+          <h2>招生就业</h2>
+          <p>欢迎关注学校招生简章、专业介绍、奖助政策和就业服务信息。</p>
+        </div>
+        <div class="admission-actions">
+          <button id="studentApplyBtn" class="btn btn-light">学生登录提交申请</button>
+          <a href="#notice" class="btn btn-outline-light">查看通知</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="notice" class="section soft">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="section-label">NOTICE</span>
+            <h2>通知公告</h2>
+          </div>
+          <p>面向师生与社会公开发布的重要通知。</p>
+        </div>
+        <div id="noticeList" class="notice-list"></div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container contact-panel">
+        <div>
+          <span class="section-label">CONTACT</span>
+          <h2>联系我们</h2>
+          <p>地址：湖北省武汉市未来大道 88 号</p>
+          <p>电话：027-8888-6666　邮箱：office@example.edu.cn</p>
+        </div>
+        <button id="openLoginBtn2" class="btn btn-primary">进入管理后台</button>
+      </div>
+    </section>
+  </main>
+
+  <section id="backendApp" class="backend hidden">
+    <aside class="backend-sidebar">
+      <div class="backend-logo">
+        <span class="logo-mark">明</span>
+        <div>
+          <strong>智慧校园后台</strong>
+          <small id="currentRoleText">未登录</small>
+        </div>
+      </div>
+      <nav id="backendMenu" class="backend-menu"></nav>
+      <button id="backToSiteBtn" class="btn btn-ghost full">返回官网</button>
+      <button id="logoutBtn" class="btn btn-danger full">退出登录</button>
+    </aside>
+
+    <main class="backend-main">
+      <header class="backend-topbar">
+        <div>
+          <h2 id="backendTitle">管理后台</h2>
+          <p id="backendSubtitle">根据登录身份显示可用功能</p>
+        </div>
+        <div class="user-chip">
+          <span id="currentUserName">-</span>
+          <small id="currentUserEmail">-</small>
+        </div>
+      </header>
+      <div id="backendContent"></div>
+    </main>
+  </section>
+
+  <dialog id="loginDialog" class="login-dialog">
+    <form id="loginForm" method="dialog" class="login-panel">
+      <button type="button" id="closeLoginBtn" class="dialog-close">×</button>
+      <span class="section-label">LOGIN</span>
+      <h2>统一身份认证</h2>
+      <p class="muted">请选择身份后登录。系统会校验 Supabase profiles 表中的真实身份。</p>
+
+      <div class="role-tabs">
+        <button type="button" class="role-tab active" data-role="admin">
+          <strong>学校管理员</strong>
+          <small>官网内容、用户、申请、系统设置</small>
+        </button>
+        <button type="button" class="role-tab" data-role="teacher">
+          <strong>教师入口</strong>
+          <small>新闻通知、课程与教学信息</small>
+        </button>
+        <button type="button" class="role-tab" data-role="student">
+          <strong>学生入口</strong>
+          <small>查看通知、提交个人申请</small>
+        </button>
+      </div>
+
+      <label>
+        邮箱
+        <input id="loginEmail" type="email" placeholder="请输入 Supabase Auth 邮箱" required />
+      </label>
+      <label>
+        密码
+        <input id="loginPassword" type="password" placeholder="请输入密码" required />
+      </label>
+
+      <button type="submit" class="btn btn-primary full">登录</button>
+      <p id="loginMessage" class="form-message"></p>
+    </form>
+  </dialog>
+
+  <dialog id="entityDialog" class="entity-dialog">
+    <form id="entityForm" method="dialog">
+      <button type="button" id="closeEntityBtn" class="dialog-close">×</button>
+      <h2 id="entityTitle">编辑</h2>
+      <div id="entityFields" class="entity-fields"></div>
+      <div class="dialog-actions">
+        <button type="button" id="cancelEntityBtn" class="btn btn-ghost">取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+      <p id="entityMessage" class="form-message"></p>
+    </form>
+  </dialog>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
